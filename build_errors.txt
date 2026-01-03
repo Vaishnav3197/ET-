@@ -1,0 +1,737 @@
+﻿> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:kaptGenerateStubsDebugKotlin UP-TO-DATE
+> Task :app:kaptDebugKotlin UP-TO-DATE
+
+> Task :app:compileDebugKotlin
+.\gradlew.bat : e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrati
+onUtility.kt:114:34 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+At line:1 char:63
++ ... tudio\jbr"; .\gradlew.bat compileDebugKotlin --stacktrace 2>&1 | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (e: file:///C:/U...' was expected.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:182
+:61 Unresolved reference 'createdById'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:194
+:25 No parameter with name 'createdById' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:195
+:25 No parameter with name 'dueDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:195
+:40 Unresolved reference 'dueDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:198
+:25 No parameter with name 'progress' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:198
+:41 Unresolved reference 'progress'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:199
+:25 No parameter with name 'createdDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:199
+:44 Unresolved reference 'createdDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:230
+:38 Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.String' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:231
+:37 Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.String' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:232
+:37 Argument type mismatch: actual type is 'kotlin.Long', but 'kotlin.Long' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:233
+:35 Argument type mismatch: actual type is 'kotlin.Long', but 'kotlin.Long' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:234
+:25 No parameter with name 'numberOfDays' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:234
+:46 Unresolved reference 'numberOfDays'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:235
+:34 Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.String' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:236
+:34 Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.String' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:237
+:25 No parameter with name 'submittedDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:237
+:47 Unresolved reference 'submittedDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:238
+:25 No parameter with name 'reviewedById' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:238
+:40 Argument type mismatch: actual type is 'R?', but 'K?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:238
+:46 Unresolved reference 'reviewedById'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:238
+:60 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:238
+:64 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:238
+:89 Argument type mismatch: actual type is 'kotlin.String', but 'K' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:239
+:25 No parameter with name 'adminComments' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:239
+:47 Unresolved reference 'adminComments'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:264
+:62 Unresolved reference 'reviewerId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:273
+:25 No parameter with name 'reviewerId' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:274
+:25 No parameter with name 'ratingDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:274
+:45 Unresolved reference 'ratingDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:275
+:25 No parameter with name 'qualityOfWork' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:275
+:48 Unresolved reference 'qualityOfWork'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:276
+:25 No parameter with name 'productivity' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:276
+:47 Unresolved reference 'productivity'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:277
+:25 No parameter with name 'communication' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:277
+:48 Unresolved reference 'communication'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:278
+:25 No parameter with name 'teamwork' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:278
+:43 Unresolved reference 'teamwork'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:279
+:25 No parameter with name 'overallRating' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:279
+:48 Unresolved reference 'overallRating'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:304
+:68 Unresolved reference 'employeeId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:311
+:25 No parameter with name 'employeeId' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:315
+:25 No parameter with name 'sentDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:315
+:49 Unresolved reference 'sentDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:345
+:25 No parameter with name 'description' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:345
+:45 Unresolved reference 'description'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:372
+:25 No parameter with name 'assignmentDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:372
+:53 Unresolved reference 'assignmentDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:402
+:38 Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.String' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:403
+:32 Argument type mismatch: actual type is 'kotlin.Long', but 'kotlin.Long' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:404
+:25 No parameter with name 'clockInTime' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:404
+:52 Unresolved reference 'clockInTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:405
+:25 No parameter with name 'clockOutTime' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:405
+:48 Unresolved reference 'clockOutTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:405
+:62 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:405
+:66 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:406
+:25 No parameter with name 'totalHours' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:406
+:46 Unresolved reference 'totalHours'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:407
+:33 Argument type mismatch: actual type is 'kotlin.String?', but 'kotlin.String?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:439
+:25 No parameter with name 'payPeriodStart' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:439
+:50 Unresolved reference 'payPeriodStart'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:440
+:25 No parameter with name 'payPeriodEnd' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:440
+:48 Unresolved reference 'payPeriodEnd'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:441
+:25 No parameter with name 'basicSalary' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:441
+:47 Unresolved reference 'basicSalary'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:442
+:25 No parameter with name 'allowances' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:442
+:46 Unresolved reference 'allowances'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:443
+:25 No parameter with name 'deductions' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:443
+:46 Unresolved reference 'deductions'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:444
+:25 No parameter with name 'taxDeductions' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:444
+:49 Unresolved reference 'taxDeductions'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:445
+:25 No parameter with name 'totalDeductions' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:445
+:51 Unresolved reference 'totalDeductions'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:446
+:25 No parameter with name 'grossPay' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:446
+:44 Unresolved reference 'grossPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:447
+:25 No parameter with name 'netPay' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:447
+:42 Unresolved reference 'netPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:448
+:25 No parameter with name 'hoursWorked' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:448
+:47 Unresolved reference 'hoursWorked'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:449
+:25 No parameter with name 'paymentDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:449
+:47 Unresolved reference 'paymentDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:450
+:25 No parameter with name 'paymentStatus' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:450
+:49 Unresolved reference 'paymentStatus'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:484
+:25 No parameter with name 'fileUrl' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:484
+:44 Unresolved reference 'fileUri'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:485
+:25 No parameter with name 'fileSize' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:485
+:45 Unresolved reference 'fileSize'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:486
+:25 No parameter with name 'uploadDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:486
+:47 Unresolved reference 'uploadDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:488
+:25 No parameter with name 'category' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:488
+:45 Unresolved reference 'category'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:515
+:66 Unresolved reference 'createdById'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:524
+:25 No parameter with name 'createdById' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:525
+:25 No parameter with name 'createdDate' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:525
+:49 Unresolved reference 'createdDate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:526
+:25 No parameter with name 'memberCount' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:526
+:49 Unresolved reference 'memberCount'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:527
+:25 No parameter with name 'lastMessage' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:527
+:49 Unresolved reference 'lastMessage'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:528
+:25 No parameter with name 'lastMessageTime' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:528
+:53 Unresolved reference 'lastMessageTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:532
+:63 Unresolved reference 'getGroupMembersList'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:533
+:53 Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:559
+:25 No parameter with name 'content' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:559
+:43 Unresolved reference 'content'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:560
+:25 No parameter with name 'sentTime' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:560
+:49 Unresolved reference 'sentTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:563
+:25 No parameter with name 'isEdited' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/DataMigrationUtility.kt:563
+:44 Unresolved reference 'isEdited'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:33:44 No parameter with name 'fileUrl' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:60:18 Unresolved reference 'fileUrl'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:60:27 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:60:33 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:62:63 Suspension functions can only be called within coroutine body.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:221:23 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:221:29 Unresolved reference 'fileSize'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:221:34 Unresolved reference 'fileSize'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:234:59 Unresolved reference 'fileUrl'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseDocumentRepository.
+kt:249:18 Unresolved reference 'fileUrl'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseLeaveRepository.kt:
+173:45 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseLeaveRepository.kt:
+173:51 Unresolved reference 'numberOfDays'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseLeaveRepository.kt:
+173:56 Unresolved reference 'numberOfDays'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:24:42 Argument type mismatch: actual type is 'kotlin.String?', but 'kotlin.String' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:26:46 Unresolved reference 'content'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:27:50 Unresolved reference 'sentTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:135:21 No parameter with name 'memberId' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:136:21 No parameter with name 'role' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:136:50 Unresolved reference 'createdById'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:246:17 No parameter with name 'memberId' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:247:17 No parameter with name 'role' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:255:80 Unresolved reference 'memberCount'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseMessageRepository.k
+t:281:89 Unresolved reference 'memberCount'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseNotificationReposit
+ory.kt:158:47 No parameter with name 'employeeId' found.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:170:21 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:170:27 Unresolved reference 'netPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:170:32 Unresolved reference 'netPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:189:38 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:189:44 Unresolved reference 'grossPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:189:49 Unresolved reference 'grossPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:190:43 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:190:49 Unresolved reference 'totalDeductions'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:190:54 Unresolved reference 'totalDeductions'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:191:36 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:191:42 Unresolved reference 'netPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:191:47 Unresolved reference 'netPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:192:49 Unresolved reference 'hoursWorked'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:273:38 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:273:44 Unresolved reference 'grossPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:273:49 Unresolved reference 'grossPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:274:36 Overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigDecimal): BigDecimal
+fun <T> Iterable<T>.sumOf(selector: (T) -> BigInteger): BigInteger
+fun <T> Iterable<T>.sumOf(selector: (T) -> Double): Double
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> Long): Long
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+fun <T> Iterable<T>.sumOf(selector: (T) -> ULong): ULong
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:274:42 Unresolved reference 'netPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePayrollRepository.k
+t:274:47 Unresolved reference 'netPay'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:129:21 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:129:25 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:129:30 Unresolved reference 'overallRating'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:129:46 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.average(): Double
+fun Iterable<Double>.average(): Double
+fun Iterable<Float>.average(): Double
+fun Iterable<Int>.average(): Double
+fun Iterable<Long>.average(): Double
+fun Iterable<Short>.average(): Double
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:146:38 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:146:42 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:146:47 Unresolved reference 'overallRating'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:146:63 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.average(): Double
+fun Iterable<Double>.average(): Double
+fun Iterable<Float>.average(): Double
+fun Iterable<Int>.average(): Double
+fun Iterable<Long>.average(): Double
+fun Iterable<Short>.average(): Double
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:147:38 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:147:42 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:147:47 Unresolved reference 'qualityOfWork'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:147:63 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.average(): Double
+fun Iterable<Double>.average(): Double
+fun Iterable<Float>.average(): Double
+fun Iterable<Int>.average(): Double
+fun Iterable<Long>.average(): Double
+fun Iterable<Short>.average(): Double
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:148:43 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:148:47 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:148:52 Unresolved reference 'productivity'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:148:67 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.average(): Double
+fun Iterable<Double>.average(): Double
+fun Iterable<Float>.average(): Double
+fun Iterable<Int>.average(): Double
+fun Iterable<Long>.average(): Double
+fun Iterable<Short>.average(): Double
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:149:44 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:149:48 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:149:53 Unresolved reference 'communication'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:149:69 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.average(): Double
+fun Iterable<Double>.average(): Double
+fun Iterable<Float>.average(): Double
+fun Iterable<Int>.average(): Double
+fun Iterable<Long>.average(): Double
+fun Iterable<Short>.average(): Double
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:150:39 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:150:43 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:150:48 Unresolved reference 'teamwork'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebasePerformanceReposito
+ry.kt:150:59 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.average(): Double
+fun Iterable<Double>.average(): Double
+fun Iterable<Float>.average(): Double
+fun Iterable<Int>.average(): Double
+fun Iterable<Long>.average(): Double
+fun Iterable<Short>.average(): Double
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseShiftRepository.kt:
+251:81 Unresolved reference 'requesterShiftAssignmentId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseShiftRepository.kt:
+254:78 Unresolved reference 'targetShiftAssignmentId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseShiftRepository.kt:
+260:59 Unresolved reference 'requesterShiftAssignmentId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseShiftRepository.kt:
+264:59 Unresolved reference 'targetShiftAssignmentId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:142:18 Cannot infer type for this parameter. Please specify it explicitly.
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:142:29 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:142:34 Unresolved reference 'totalHours'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:142:47 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.sum(): Int
+fun Iterable<Double>.sum(): Double
+fun Iterable<Float>.sum(): Float
+fun Iterable<Int>.sum(): Int
+fun Iterable<Long>.sum(): Long
+fun Iterable<Short>.sum(): Int
+fun Iterable<UByte>.sum(): UInt
+fun Iterable<UInt>.sum(): UInt
+fun Iterable<ULong>.sum(): ULong
+fun Iterable<UShort>.sum(): UInt
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:226:20 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:226:31 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:226:36 Unresolved reference 'breakDuration'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseTimeLogRepository.k
+t:226:52 Overload resolution ambiguity between candidates:
+fun Iterable<Byte>.sum(): Int
+fun Iterable<Double>.sum(): Double
+fun Iterable<Float>.sum(): Float
+fun Iterable<Int>.sum(): Int
+fun Iterable<Long>.sum(): Long
+fun Iterable<Short>.sum(): Int
+fun Iterable<UByte>.sum(): UInt
+fun Iterable<UInt>.sum(): UInt
+fun Iterable<ULong>.sum(): ULong
+fun Iterable<UShort>.sum(): UInt
+e: 
+file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/MigrationScreen.kt:131:29 
+Try catch is not supported around composable function invocations.
+e: 
+file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/MigrationScreen.kt:132:89 
+@Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:42:46 
+Unresolved reference 'getTotalOvertimeMinutes'.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugKotlin'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing 
+org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:287)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:335)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:318)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:323)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:252)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:61)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
+	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:119)
+	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:132)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	... 2 more
+
+
+BUILD FAILED in 29s
+19 actionable tasks: 1 executed, 18 up-to-date

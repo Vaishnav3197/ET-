@@ -1,0 +1,389 @@
+﻿> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+
+> Task :app:compileDebugKotlin FAILED
+.\gradlew.bat : e: 
+file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/DocumentsScreen.kt:632:70 
+Argument type mismatch: actual type is 'java.util.Date?', but 'kotlin.Long' was expected.
+At line:1 char:63
++ ... id\Android Studio\jbr"; .\gradlew.bat compileDebugKotlin 2>&1 | Out-F ...
++                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (e: file:///C:/U...' was expected.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/PayrollScreen.kt:191:57 
+Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.Int' was expected.
+e: 
+file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ShiftManagementScreen.kt:60:56 
+Unresolved reference 'it'.
+e: 
+file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ShiftManagementScreen.kt:62:56 
+Unresolved reference 'it'.
+e: 
+file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ShiftManagementScreen.kt:165:64 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:17:51 
+Unresolved reference 'performanceRatingRepository'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:23:38 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:23:57 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:26:18 
+Argument type mismatch: actual type is 'kotlinx.coroutines.flow.Flow<T>', but 'kotlin.collections.List<com.Vaishnav.employeetracker.data.Attendance>' 
+was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:26:22 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:26:29 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:26:34 
+Unresolved reference 'date'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:32:38 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:32:57 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:35:18 
+Argument type mismatch: actual type is 'kotlinx.coroutines.flow.Flow<T>', but 'kotlin.collections.List<com.Vaishnav.employeetracker.data.Attendance>' 
+was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:35:22 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:35:29 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:35:34 
+Unresolved reference 'date'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:35:74 
+Unresolved reference 'isLate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:40:34 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:40:53 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:43:20 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:43:20 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:43:26 Cannot 
+infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:43:31 
+Unresolved reference 'date'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:127:70 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:128:28 
+Overload resolution ambiguity between candidates:
+fun <T> Array<out T>.isNotEmpty(): Boolean
+fun BooleanArray.isNotEmpty(): Boolean
+fun ByteArray.isNotEmpty(): Boolean
+fun CharArray.isNotEmpty(): Boolean
+fun DoubleArray.isNotEmpty(): Boolean
+fun FloatArray.isNotEmpty(): Boolean
+fun IntArray.isNotEmpty(): Boolean
+fun LongArray.isNotEmpty(): Boolean
+fun ShortArray.isNotEmpty(): Boolean
+fun <T> Collection<T>.isNotEmpty(): Boolean
+fun <K, V> Map<out K, V>.isNotEmpty(): Boolean
+fun CharSequence.isNotEmpty(): Boolean
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:129:21 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:129:21 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:129:21 Not 
+enough information to infer type argument for 'R'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:129:25 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:129:30 
+Unresolved reference 'rating'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:129:39 
+Unresolved reference 'average'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:142:48 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:142:67 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:149:48 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:149:48 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:149:55 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:150:24 
+Unresolved reference 'employeeId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:150:56 
+Unresolved reference 'date'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:152:46 
+Unresolved reference 'size'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:153:43 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:153:43 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:153:49 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:153:54 
+Unresolved reference 'isLate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:154:47 
+Unresolved reference 'isNotEmpty'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:155:32 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:155:32 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:155:32 Not 
+enough information to infer type argument for 'R'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:155:43 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:155:48 
+Unresolved reference 'totalWorkingHours'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AdminViewModel.kt:155:68 
+Unresolved reference 'average'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AnalyticsViewModel.kt:14:51 
+Unresolved reference 'performanceRatingRepository'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:37:48 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:37:67 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:38:44 
+Overload resolution ambiguity between candidates:
+fun <T> Array<out T>.find(predicate: (T) -> Boolean): T?
+fun BooleanArray.find(predicate: (Boolean) -> Boolean): Boolean?
+fun ByteArray.find(predicate: (Byte) -> Boolean): Byte?
+fun CharArray.find(predicate: (Char) -> Boolean): Char?
+fun DoubleArray.find(predicate: (Double) -> Boolean): Double?
+fun FloatArray.find(predicate: (Float) -> Boolean): Float?
+fun IntArray.find(predicate: (Int) -> Boolean): Int?
+fun LongArray.find(predicate: (Long) -> Boolean): Long?
+fun ShortArray.find(predicate: (Short) -> Boolean): Short?
+fun <T> Iterable<T>.find(predicate: (T) -> Boolean): T?
+fun UByteArray.find(predicate: (UByte) -> Boolean): UByte?
+fun UIntArray.find(predicate: (UInt) -> Boolean): UInt?
+fun ULongArray.find(predicate: (ULong) -> Boolean): ULong?
+fun UShortArray.find(predicate: (UShort) -> Boolean): UShort?
+fun <T> Sequence<T>.find(predicate: (T) -> Boolean): T?
+fun CharSequence.find(predicate: (Char) -> Boolean): Char?
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:38:51 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:38:82 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:38:102 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:42:28 
+Unresolved reference 'checkOutTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:54:28 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:54:57 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:55:52 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:55:52 
+Not enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:55:59 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:56:24 
+Unresolved reference 'employeeId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:56:55 
+Unresolved reference 'date'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:58:50 
+Unresolved reference 'size'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:59:47 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:59:47 
+Not enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:59:47 
+Suspension functions can only be called within coroutine body.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:59:53 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:59:58 
+Unresolved reference 'isLate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:61:51 
+Unresolved reference 'isNotEmpty'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:62:36 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:62:36 
+Not enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:62:36 
+Not enough information to infer type argument for 'R'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:62:47 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:62:52 
+Unresolved reference 'totalWorkingHours'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:62:72 
+Unresolved reference 'average'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:83:48 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:83:67 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:84:42 
+Overload resolution ambiguity between candidates:
+fun <T> Array<out T>.find(predicate: (T) -> Boolean): T?
+fun BooleanArray.find(predicate: (Boolean) -> Boolean): Boolean?
+fun ByteArray.find(predicate: (Byte) -> Boolean): Byte?
+fun CharArray.find(predicate: (Char) -> Boolean): Char?
+fun DoubleArray.find(predicate: (Double) -> Boolean): Double?
+fun FloatArray.find(predicate: (Float) -> Boolean): Float?
+fun IntArray.find(predicate: (Int) -> Boolean): Int?
+fun LongArray.find(predicate: (Long) -> Boolean): Long?
+fun ShortArray.find(predicate: (Short) -> Boolean): Short?
+fun <T> Iterable<T>.find(predicate: (T) -> Boolean): T?
+fun UByteArray.find(predicate: (UByte) -> Boolean): UByte?
+fun UIntArray.find(predicate: (UInt) -> Boolean): UInt?
+fun ULongArray.find(predicate: (ULong) -> Boolean): ULong?
+fun UShortArray.find(predicate: (UShort) -> Boolean): UShort?
+fun <T> Sequence<T>.find(predicate: (T) -> Boolean): T?
+fun CharSequence.find(predicate: (Char) -> Boolean): Char?
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:84:49 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:84:80 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:84:100 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:103:28 
+Unresolved reference 'markAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:115:48 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:115:67 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:116:44 
+Overload resolution ambiguity between candidates:
+fun <T> Array<out T>.find(predicate: (T) -> Boolean): T?
+fun BooleanArray.find(predicate: (Boolean) -> Boolean): Boolean?
+fun ByteArray.find(predicate: (Byte) -> Boolean): Byte?
+fun CharArray.find(predicate: (Char) -> Boolean): Char?
+fun DoubleArray.find(predicate: (Double) -> Boolean): Double?
+fun FloatArray.find(predicate: (Float) -> Boolean): Float?
+fun IntArray.find(predicate: (Int) -> Boolean): Int?
+fun LongArray.find(predicate: (Long) -> Boolean): Long?
+fun ShortArray.find(predicate: (Short) -> Boolean): Short?
+fun <T> Iterable<T>.find(predicate: (T) -> Boolean): T?
+fun UByteArray.find(predicate: (UByte) -> Boolean): UByte?
+fun UIntArray.find(predicate: (UInt) -> Boolean): UInt?
+fun ULongArray.find(predicate: (ULong) -> Boolean): ULong?
+fun UShortArray.find(predicate: (UShort) -> Boolean): UShort?
+fun <T> Sequence<T>.find(predicate: (T) -> Boolean): T?
+fun CharSequence.find(predicate: (Char) -> Boolean): Char?
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:116:51 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:116:82 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:116:102 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:119:28 
+Unresolved reference 'checkOutTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:125:28 
+Unresolved reference 'checkInTime'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:129:38 
+Unresolved reference 'copy'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:136:28 
+Unresolved reference 'markAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:147:28 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:147:57 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:17 
+Suspension functions can only be called within coroutine body.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:26 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:26 
+Not enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:33 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:38 
+Unresolved reference 'employeeId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:65 
+Unresolved reference 'sortedByDescending'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:84 
+Unresolved reference 'date'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/AttendanceViewModel.kt:148:86 
+Unresolved reference 'it'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/DocumentViewModel.kt:38:30 
+Argument type mismatch: actual type is 'kotlin.Long', but 'java.util.Date?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/DocumentViewModel.kt:43:26 
+Unresolved reference 'addDocument'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/LeaveViewModel.kt:81:23 
+Unresolved reference 'addLeaveRequest'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/LeaveViewModel.kt:103:23 
+Unresolved reference 'addLeaveRequest'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/LeaveViewModel.kt:106:75 None 
+of the following candidates is applicable:
+suspend fun <T> Flow<T>.first(): T
+suspend fun <T> Flow<T>.first(predicate: suspend (T) -> Boolean): T
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/LeaveViewModel.kt:118:34 
+Unresolved reference 'addNotification'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/LeaveViewModel.kt:145:23 
+Unresolved reference 'addLeaveRequest'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/LeaveViewModel.kt:158:30 
+Unresolved reference 'addNotification'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/MessagingViewModel.kt:14:52 
+Unresolved reference 'getUserMessages'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/MessagingViewModel.kt:33:30 
+Argument type mismatch: actual type is 'kotlin.Int?', but 'kotlin.String?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/MessagingViewModel.kt:34:27 
+Argument type mismatch: actual type is 'kotlin.Int?', but 'kotlin.String?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/MessagingViewModel.kt:36:29 
+Argument type mismatch: actual type is 'kotlin.Long', but 'java.util.Date?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:27:18 
+Argument type mismatch: actual type is 'kotlin.collections.List<com.Vaishnav.employeetracker.data.firebase.FirebasePayrollRecord>', but 
+'kotlin.collections.List<com.Vaishnav.employeetracker.data.PayrollRecord>' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:33:18 
+Argument type mismatch: actual type is 'kotlin.collections.List<com.Vaishnav.employeetracker.data.firebase.FirebasePayrollRecord>', but 
+'kotlin.collections.List<com.Vaishnav.employeetracker.data.PayrollRecord>' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:47:48 
+Unresolved reference 'getAllAttendance'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:47:67 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:48:51 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:48:51 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:48:58 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:49:20 
+Unresolved reference 'employeeId'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:49:51 
+Unresolved reference 'date'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:52:49 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:52:49 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:52:55 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:52:60 
+Unresolved reference 'status'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:53:46 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:53:46 Not 
+enough information to infer type argument for 'T'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:53:52 
+Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:53:57 
+Unresolved reference 'isLate'.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/PayrollViewModel.kt:84:31 
+Argument type mismatch: actual type is 'kotlin.Long', but 'java.util.Date?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/viewmodel/ShiftViewModel.kt:15:31 
+Unresolved reference 'getAllActiveShifts'.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 10s
+17 actionable tasks: 1 executed, 16 up-to-date

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Employee Icon with Performance Chart -->
+    
+    <!-- Person Head -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,35
+                         a7,7 0,1 1,0 14
+                         a7,7 0,1 1,0 -14z" />
+    
+    <!-- Person Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,51
+                         c-9,0 -16,5 -16,11
+                         v7
+                         h32
+                         v-7
+                         c0,-6 -7,-11 -16,-11z" />
+    
+    <!-- Chart Background Card -->
+    <path
+        android:fillColor="#26FFFFFF"
+        android:pathData="M 30,45
+                         h48
+                         a4,4 0,0 1,4 4
+                         v20
+                         a4,4 0,0 1,-4 4
+                         h-48
+                         a4,4 0,0 1,-4 -4
+                         v-20
+                         a4,4 0,0 1,4 -4z" />
+    
+    <!-- Performance Chart Bar 1 (Short) -->
+    <path
+        android:fillColor="#80CBC4"
+        android:pathData="M36,60
+                         h6
+                         a1,1 0,0 1,1 1
+                         v6
+                         a1,1 0,0 1,-1 1
+                         h-6
+                         a1,1 0,0 1,-1 -1
+                         v-6
+                         a1,1 0,0 1,1 -1z" />
+    
+    <!-- Performance Chart Bar 2 (Medium) -->
+    <path
+        android:fillColor="#4DB6AC"
+        android:pathData="M46,56
+                         h6
+                         a1,1 0,0 1,1 1
+                         v10
+                         a1,1 0,0 1,-1 1
+                         h-6
+                         a1,1 0,0 1,-1 -1
+                         v-10
+                         a1,1 0,0 1,1 -1z" />
+    
+    <!-- Performance Chart Bar 3 (Tall) -->
+    <path
+        android:fillColor="#FF7043"
+        android:pathData="M56,52
+                         h6
+                         a1,1 0,0 1,1 1
+                         v14
+                         a1,1 0,0 1,-1 1
+                         h-6
+                         a1,1 0,0 1,-1 -1
+                         v-14
+                         a1,1 0,0 1,1 -1z" />
+    
+    <!-- Performance Chart Bar 4 (Very Tall) -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M66,48
+                         h6
+                         a1,1 0,0 1,1 1
+                         v18
+                         a1,1 0,0 1,-1 1
+                         h-6
+                         a1,1 0,0 1,-1 -1
+                         v-18
+                         a1,1 0,0 1,1 -1z" />
+    
+    <!-- Success Badge Circle -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M70,62
+                         a5,5 0,1 1,0 10
+                         a5,5 0,1 1,0 -10z" />
+    
+    <!-- Checkmark in Badge -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M68,67
+                         l2,2
+                         l4,-4" />
+</vector>
