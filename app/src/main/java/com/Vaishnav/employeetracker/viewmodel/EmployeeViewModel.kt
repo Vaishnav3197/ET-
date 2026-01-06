@@ -21,6 +21,13 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
         }
     }
     
+    // Get ONLY employees (exclude admin) - for Employee Directory
+    fun getAllEmployeesOnly(): Flow<List<Employee>> {
+        return employeeRepo.getAllEmployeesOnly().map { firebaseEmployees ->
+            firebaseEmployees.map { it.toRoomEmployee() }
+        }
+    }
+    
     suspend fun getEmployeeById(employeeId: Int): Employee? {
         val result = employeeRepo.getEmployeeById(employeeId.toString())
         return result?.toRoomEmployee()

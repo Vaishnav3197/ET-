@@ -111,6 +111,11 @@ class MessagingViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
     
+    // Get raw Firebase messages for a group chat (for GroupChatScreen)
+    fun getGroupFirebaseMessages(groupId: String): Flow<List<FirebaseMessage>> {
+        return messageRepo.getGroupMessages(groupId)
+    }
+    
     // Get unread message count for a group/conversation
     fun getUnreadCount(groupId: String, userId: String): Flow<Int> {
         return messageRepo.getUnreadMessageCount(groupId, userId)

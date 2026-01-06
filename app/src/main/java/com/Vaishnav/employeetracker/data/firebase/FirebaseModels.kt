@@ -34,8 +34,7 @@ data class FirebaseAttendance(
     val date: Long = 0L, // Date only (midnight timestamp)
     @ServerTimestamp
     val checkInTime: Date? = null,
-    @ServerTimestamp
-    val checkOutTime: Date? = null,
+    val checkOutTime: Date? = null, // Manually set on checkout, NOT auto-timestamp
     val checkInLocation: String = "", // "lat,lng"
     val checkOutLocation: String? = null,
     val checkInPhotoUri: String? = null,

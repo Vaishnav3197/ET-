@@ -1,0 +1,27 @@
+package com.Vaishnav.employeetracker.navigation
+
+sealed class Screen(val route: String) {
+    object Login : Screen("login")
+    object Splash : Screen("splash")
+    object Dashboard : Screen("dashboard")
+    object AdminDashboard : Screen("admin_dashboard")
+    object AdminPanel : Screen("admin_panel")
+    object EmployeeList : Screen("employee_list")
+    object EmployeeDetail : Screen("employee_detail/{employeeId}") {
+        fun createRoute(employeeId: Int) = "employee_detail/$employeeId"
+    }
+    object AddEmployee : Screen("add_employee")
+    object EditEmployee : Screen("edit_employee/{employeeId}") {
+        fun createRoute(employeeId: Int) = "edit_employee/$employeeId"
+    }
+    object TaskList : Screen("task_list")
+    object AddTask : Screen("add_task/{employeeId}") {
+        fun createRoute(employeeId: Int) = "add_task/$employeeId"
+    }
+    object PerformanceList : Screen("performance_list")
+    object AddPerformance : Screen("add_performance/{employeeId}") {
+        fun createRoute(employeeId: Int) = "add_performance/$employeeId"
+    }
+    object Analytics : Screen("analytics")
+    object Settings : Screen("settings")
+}

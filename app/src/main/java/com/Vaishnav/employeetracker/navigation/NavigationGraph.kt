@@ -1,11 +1,16 @@
 package com.Vaishnav.employeetracker.navigation
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -131,7 +136,7 @@ fun NavigationGraph(
                     navController.navigate(Screen.MyTasks.route)
                 },
                 onNavigateToLeave = {
-                    navController.navigate(Screen.LeaveManagement.route)
+                    navController.navigate(Screen.LeaveManagement.route)  // Employee uses LeaveManagement
                 },
                 onNavigateToProfile = {
                     navController.navigate(Screen.EmployeeProfile.route)
@@ -239,45 +244,65 @@ fun NavigationGraph(
             val firebaseUserId = FirebaseAuthManager.getInstance().getCurrentUserId()
             var employee by remember { mutableStateOf<com.Vaishnav.employeetracker.data.firebase.FirebaseEmployee?>(null) }
             var isLoading by remember { mutableStateOf(true) }
+            var errorOccurred by remember { mutableStateOf(false) }
             
             LaunchedEffect(firebaseUserId) {
                 if (firebaseUserId != null) {
                     try {
                         employee = FirebaseManager.employeeRepository.getEmployeeByUserId(firebaseUserId)
+                        if (employee == null) {
+                            errorOccurred = true
+                        }
                     } catch (e: Exception) {
-                        navController.popBackStack()
+                        android.util.Log.e("NavigationGraph", "Error loading employee for leave", e)
+                        errorOccurred = true
                     } finally {
                         isLoading = false
                     }
                 } else {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(0) { inclusive = true }
-                    }
+                    errorOccurred = true
+                    isLoading = false
                 }
             }
             
-            if (!isLoading && employee != null) {
-                LeaveManagementScreen(
-                    employeeId = employee!!.id,
-                    onNavigateBack = { navController.popBackStack() }
-                )
+            when {
+                isLoading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+                errorOccurred || employee == null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Error loading employee data")
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = { navController.popBackStack() }) {
+                                Text("Go Back")
+                            }
+                        }
+                    }
+                }
+                else -> {
+                    LeaveManagementScreen(
+                        employeeId = employee!!.id,
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                }
             }
         }
         
-        // Temporarily disabled - ProfileScreen has compilation errors
-        /*
+        // Employee Profile Screen
         composable(Screen.EmployeeProfile.route) {
             com.Vaishnav.employeetracker.ui.screens.employee.ProfileScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onLogout = {
-                    AuthManager.logout()
+                    com.Vaishnav.employeetracker.data.AuthManager.logout()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
             )
         }
-        */
         
         // ===== ADMIN SCREENS =====
         composable(Screen.AdminDashboard.route) {
@@ -347,31 +372,20 @@ fun NavigationGraph(
         }
         
         composable(Screen.LeaveApproval.route) {
+            // Admin Leave Approval - no employee data needed
             val firebaseUserId = FirebaseAuthManager.getInstance().getCurrentUserId()
-            var employee by remember { mutableStateOf<com.Vaishnav.employeetracker.data.firebase.FirebaseEmployee?>(null) }
-            var isLoading by remember { mutableStateOf(true) }
             
-            LaunchedEffect(firebaseUserId) {
-                if (firebaseUserId != null) {
-                    try {
-                        employee = FirebaseManager.employeeRepository.getEmployeeByUserId(firebaseUserId)
-                    } catch (e: Exception) {
-                        navController.popBackStack()
-                    } finally {
-                        isLoading = false
-                    }
-                } else {
+            if (firebaseUserId != null) {
+                LeaveApprovalScreen(
+                    adminId = firebaseUserId,  // Use Firebase auth UID directly
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            } else {
+                LaunchedEffect(Unit) {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
-            }
-            
-            if (!isLoading && employee != null) {
-                LeaveApprovalScreen(
-                    adminId = employee!!.id,
-                    onNavigateBack = { navController.popBackStack() }
-                )
             }
         }
         
@@ -454,12 +468,10 @@ fun NavigationGraph(
         composable(Screen.Messaging.route) {
             val firebaseUserId = FirebaseAuthManager.getInstance().getCurrentUserId()
             if (firebaseUserId != null) {
-                MessagingScreen(
-                    currentUserId = firebaseUserId,
-                    onNavigateBack = { navController.popBackStack() },
-                    onOpenChat = { userId, userName ->
-                        navController.navigate(Screen.Conversation.createRoute(userId, userName))
-                    }
+                // Navigate to company-wide group chat for all users
+                GroupChatScreen(
+                    groupId = "company_group",
+                    onNavigateBack = { navController.popBackStack() }
                 )
             } else {
                 // User not authenticated, redirect to login

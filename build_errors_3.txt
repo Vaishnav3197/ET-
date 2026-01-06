@@ -1,0 +1,147 @@
+﻿> Task :app:clean
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata
+> Task :app:processDebugNavigationResources
+> Task :app:compileDebugNavigationResources
+> Task :app:generateDebugResValues
+> Task :app:processDebugGoogleServices
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:processDebugManifestForPackage
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
+> Task :app:validateSigningDebug
+> Task :app:mergeDebugNativeLibs
+> Task :app:writeDebugAppMetadata
+> Task :app:mergeLibDexDebug
+> Task :app:writeDebugSigningConfigVersions
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libimage_processing_util_jni.so. Run with --info option to learn more.
+
+> Task :app:processDebugResources
+> Task :app:mergeExtDexDebug
+> Task :app:compileDebugKotlin
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/MainActivity.kt:42:14 'fun setPersistenceEnabled(p0: Boolean): FirebaseFirestoreSettings.Builder' is deprecated. Deprecated in Java.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/MainActivity.kt:43:14 'fun setCacheSizeBytes(p0: Long): FirebaseFirestoreSettings.Builder' is deprecated. Deprecated in Java.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/data/firebase/FirebaseAuthManager.kt:183:18 'fun updateEmail(p0: String): Task<Void!>' is deprecated. Deprecated in Java.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/components/EnhancedPayrollDialog.kt:58:5 'fun AlertDialog(onDismissRequest: () -> Unit, modifier: Modifier = ..., properties: DialogProperties = ..., content: @Composable() ComposableFunction0<Unit>): Unit' is deprecated. Use BasicAlertDialog instead.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/components/EnhancedPayrollDialog.kt:155:25 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/components/EnhancedPayrollDialog.kt:185:29 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/AnalyticsScreen.kt:68:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/AnalyticsScreen.kt:289:13 'fun CircularProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., strokeWidth: Dp = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/AnalyticsScreen.kt:393:13 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/AnalyticsScreen.kt:443:9 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/AnalyticsScreen.kt:511:21 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ChatScreen.kt:95:68 Unchecked cast of 'kotlin.Any?' to 'kotlin.collections.List<kotlin.String>'.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ChatScreen.kt:96:72 Unchecked cast of 'kotlin.Any?' to 'kotlin.collections.Map<kotlin.String, kotlin.String>'.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ChatScreen.kt:99:62 Unchecked cast of 'kotlin.Any?' to 'kotlin.collections.Map<kotlin.String, kotlin.Int>'.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ChatScreen.kt:120:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ChatScreen.kt:189:47 'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ChatScreen.kt:453:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ChatScreen.kt:535:43 'val Icons.Filled.Send: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Send.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/DocumentsScreen.kt:135:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/DocumentsScreen.kt:173:48 'val Icons.Filled.Sort: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Sort.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/DocumentsScreen.kt:793:54 'val Icons.Filled.OpenInNew: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.OpenInNew.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/EnhancedAnalyticsScreen.kt:133:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/EnhancedAnalyticsScreen.kt:205:29 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/EnhancedShiftManagementScreen.kt:113:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/EnhancedShiftManagementScreen.kt:167:53 'val Icons.Filled.List: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.List.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/LoginScreen.kt:468:43 'val Icons.Filled.HelpOutline: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.HelpOutline.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/MessagingScreens.kt:56:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/MessagingScreens.kt:123:49 'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/MessagingScreens.kt:349:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/MessagingScreens.kt:403:57 'val Icons.Filled.Send: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Send.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/MessagingScreens.kt:422:53 'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/NotificationSettingsScreen.kt:74:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/NotificationSettingsScreen.kt:149:46 'val Icons.Filled.Message: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Message.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/OnboardingScreen.kt:31:8 'annotation class ExperimentalPagerApi : Annotation' is deprecated. accompanist/pager is deprecated.
+The androidx.compose equivalent of Pager is androidx.compose.foundation.pager.Pager.
+For more migration information, please visit https://google.github.io/accompanist/pager/#migration.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/OnboardingScreen.kt:63:22 'fun rememberPagerState(initialPage: Int = ...): PagerState' is deprecated. accompanist/pager is deprecated.
+The androidx.compose equivalent of rememberPagerState is androidx.compose.foundation.pager.rememberPagerState().
+For more migration information, please visit https://google.github.io/accompanist/pager/#migration.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/OnboardingScreen.kt:89:13 'fun HorizontalPager(count: Int, modifier: Modifier = ..., state: PagerState = ..., reverseLayout: Boolean = ..., itemSpacing: Dp = ..., contentPadding: PaddingValues = ..., verticalAlignment: Alignment.Vertical = ..., flingBehavior: FlingBehavior = ..., key: ((@ParameterName(...) Int) -> Any)? = ..., userScrollEnabled: Boolean = ..., content: @Composable() ComposableFunction2<PagerScope, @ParameterName(...) Int, Unit>): Unit' is deprecated. accompanist/pager is deprecated.
+The androidx.compose equivalent of HorizontalPager is androidx.compose.foundation.pager.HorizontalPager
+For more migration information, please visit https://google.github.io/accompanist/pager/#migration.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/OnboardingScreen.kt:98:13 'fun HorizontalPagerIndicator(pagerState: PagerState, modifier: Modifier = ..., pageCount: Int = ..., pageIndexMapping: (Int) -> Int = ..., activeColor: Color = ..., inactiveColor: Color = ..., indicatorWidth: Dp = ..., indicatorHeight: Dp = ..., spacing: Dp = ..., indicatorShape: Shape = ...): Unit' is deprecated. HorizontalPagerIndicator for accompanist Pagers are deprecated, please use the version that takes 
+   androidx.compose.foundation.pager.PagerState instead
+For more migration information, please visit https://google.github.io/accompanist/pager/#migration.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/OnboardingScreen.kt:130:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/OnboardingScreen.kt:158:84 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/PayrollScreen.kt:80:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/PayrollScreen.kt:284:45 'val Icons.Filled.KeyboardArrowRight: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.KeyboardArrowRight.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/PayrollScreen.kt:308:17 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/PayrollScreen.kt:312:17 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/PayrollScreen.kt:316:17 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/RegisterScreen.kt:127:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ShiftManagementScreen.kt:98:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ShiftManagementScreen.kt:202:36 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/ShiftManagementScreen.kt:210:36 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AdminDashboard.kt:196:44 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AdminDashboard.kt:382:42 'val Icons.Filled.Message: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Message.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AdminDashboard.kt:396:42 'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AdminDashboard.kt:440:42 'val Icons.Filled.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Assignment.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AdminDashboard.kt:448:42 'val Icons.Filled.EventNote: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.EventNote.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AdminDashboard.kt:554:41 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AdminDashboard.kt:640:9 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AttendanceMonitoringScreen.kt:60:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AttendanceMonitoringScreen.kt:100:21 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AttendanceMonitoringScreen.kt:198:53 'val Icons.Filled.Login: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Login.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/AttendanceMonitoringScreen.kt:213:57 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/EmployeeDirectoryScreen.kt:69:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/LeaveApprovalScreen.kt:66:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/ReportsScreen.kt:44:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/ReportsScreen.kt:362:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/ReportsScreen.kt:370:44 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/ReportsScreen.kt:384:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/ReportsScreen.kt:392:44 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/TaskAssignmentScreen.kt:58:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/admin/TaskAssignmentScreen.kt:124:57 'val Icons.Filled.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Assignment.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/AttendanceScreen.kt:144:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/AttendanceScreen.kt:255:52 'val Icons.Filled.Login: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Login.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/AttendanceScreen.kt:276:52 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:177:44 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:250:42 'val Icons.Filled.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Assignment.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:263:42 'val Icons.Filled.EventNote: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.EventNote.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:330:42 'val Icons.Filled.Message: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Message.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:337:42 'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:355:21 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:357:21 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:359:21 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:381:25 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/EmployeeDashboard.kt:408:41 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/LeaveManagementScreen.kt:68:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/LeaveManagementScreen.kt:133:53 'val Icons.Filled.EventNote: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.EventNote.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/MyTasksScreen.kt:76:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/MyTasksScreen.kt:149:57 'val Icons.Filled.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Assignment.
+w: file:///C:/Users/ruman/AndroidStudioProjects/EmployeeTracker/app/src/main/java/com/Vaishnav/employeetracker/ui/screens/employee/ProfileScreen.kt:165:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+
+> Task :app:compileDebugJavaWithJavac NO-SOURCE
+> Task :app:processDebugJavaRes
+> Task :app:mergeDebugJavaResource
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+BUILD SUCCESSFUL in 59s
+38 actionable tasks: 38 executed

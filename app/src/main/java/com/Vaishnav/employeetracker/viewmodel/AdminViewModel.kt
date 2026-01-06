@@ -22,9 +22,9 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     // Attendance Monitoring
     fun getDailyAttendance(date: Long, adminId: String? = null): Flow<List<FirebaseAttendance>> {
         return if (adminId != null) {
-            // Filter by admin's employees with continuous observation
+            // Admin sees ONLY employee attendance (exclude admin account)
             attendanceRepo.getDailyAttendance(date).map { allAttendance ->
-                employeeRepo.getEmployeesByAdminId(adminId).first().let { employees ->
+                employeeRepo.getAllEmployeesOnly().first().let { employees ->
                     val employeeIds = employees.map { it.id }.toSet()
                     allAttendance.filter { employeeIds.contains(it.employeeId) }
                 }
@@ -37,9 +37,9 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     
     fun getLateArrivals(date: Long, adminId: String? = null): Flow<List<FirebaseAttendance>> {
         return if (adminId != null) {
-            // Filter by admin's employees with continuous observation
+            // Admin sees ONLY employee late arrivals (exclude admin account)
             attendanceRepo.getLateArrivals(date).map { allLateArrivals ->
-                employeeRepo.getEmployeesByAdminId(adminId).first().let { employees ->
+                employeeRepo.getAllEmployeesOnly().first().let { employees ->
                     val employeeIds = employees.map { it.id }.toSet()
                     allLateArrivals.filter { employeeIds.contains(it.employeeId) }
                 }
@@ -58,12 +58,8 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
         return try {
             val today = DateTimeHelper.getStartOfDay(DateTimeHelper.getCurrentTimestamp())
             
-            // Get employees for this admin (or all if adminId is null)
-            val employees = if (adminId != null && adminId.isNotEmpty()) {
-                employeeRepo.getEmployeesByAdminId(adminId).first()
-            } else {
-                employeeRepo.getAllActiveEmployees().first()
-            }
+            // Admin sees ONLY employees (exclude admin account)
+            val employees = employeeRepo.getAllEmployeesOnly().first()
             
             val totalEmployees = employees.size
             val employeeIds = employees.map { it.id }.toSet()
@@ -73,31 +69,93 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
                 attendanceRepo.getDailyAttendance(today).first()
             }.getOrElse { emptyList() }
             
-            // Count only present employees that belong to this admin
+            // Count only present employees
             val presentCount = todayAttendance.count { attendance ->
                 employeeIds.contains(attendance.employeeId)
             }
             
-            // Count late arrivals for this admin's employees
+            // Count late arrivals
             val lateCount = todayAttendance.count { attendance ->
                 employeeIds.contains(attendance.employeeId) && attendance.isLate
             }
             
-            DailyStats(presentCount, totalEmployees, lateCount)
+            // Calculate absent count = total employees - present
+            val absentCount = totalEmployees - presentCount
+            
+            DailyStats(presentCount, totalEmployees, lateCount, absentCount)
         } catch (e: Exception) {
             android.util.Log.e("AdminViewModel", "Error getting today stats", e)
-            DailyStats(0, 0, 0)
+            DailyStats(0, 0, 0, 0)
+        }
+    }
+    
+    // Get detailed attendance with employee names for admin dashboard
+    suspend fun getTodayAttendanceDetails(adminId: String? = null): AttendanceDetails {
+        return try {
+            val today = DateTimeHelper.getStartOfDay(DateTimeHelper.getCurrentTimestamp())
+            
+            // Get ONLY employees (exclude admin account)
+            val employees = employeeRepo.getAllEmployeesOnly().first()
+            val employeeMap = employees.associateBy { it.id }
+            
+            // Get today's attendance
+            val todayAttendance = runCatching {
+                attendanceRepo.getDailyAttendance(today).first()
+            }.getOrElse { emptyList() }
+            
+            // Create sets of employee IDs
+            val presentEmployeeIds = todayAttendance.map { it.employeeId }.toSet()
+            
+            // Categorize employees
+            val presentEmployees = mutableListOf<EmployeeAttendanceInfo>()
+            val lateEmployees = mutableListOf<EmployeeAttendanceInfo>()
+            
+            todayAttendance.forEach { attendance ->
+                employeeMap[attendance.employeeId]?.let { employee ->
+                    val info = EmployeeAttendanceInfo(
+                        id = employee.id,
+                        name = employee.name,
+                        employeeId = employee.employeeId,
+                        checkInTime = attendance.checkInTime?.time ?: 0L,
+                        isLate = attendance.isLate
+                    )
+                    if (attendance.isLate) {
+                        lateEmployees.add(info)
+                    } else {
+                        presentEmployees.add(info)
+                    }
+                }
+            }
+            
+            // Get absent employees (those not in attendance)
+            val absentEmployees = employees
+                .filter { !presentEmployeeIds.contains(it.id) }
+                .map { employee ->
+                    EmployeeAttendanceInfo(
+                        id = employee.id,
+                        name = employee.name,
+                        employeeId = employee.employeeId,
+                        checkInTime = 0L,
+                        isLate = false
+                    )
+                }
+            
+            AttendanceDetails(
+                presentEmployees = presentEmployees.sortedBy { it.name },
+                lateEmployees = lateEmployees.sortedBy { it.name },
+                absentEmployees = absentEmployees.sortedBy { it.name }
+            )
+        } catch (e: Exception) {
+            android.util.Log.e("AdminViewModel", "Error getting attendance details", e)
+            AttendanceDetails(emptyList(), emptyList(), emptyList())
         }
     }
     
     // Employee Management Stats
     suspend fun getDepartmentStats(adminId: String? = null): Map<String, Int> {
         return try {
-            val employees = if (adminId != null && adminId.isNotEmpty()) {
-                employeeRepo.getEmployeesByAdminId(adminId).first()
-            } else {
-                employeeRepo.getAllActiveEmployees().first()
-            }
+            // Admin sees department stats for ONLY employees (exclude admin)
+            val employees = employeeRepo.getAllEmployeesOnly().first()
             employees.groupBy { it.department }.mapValues { it.value.size }
         } catch (e: Exception) {
             android.util.Log.e("AdminViewModel", "Error getting department stats", e)
@@ -110,13 +168,9 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
         return try {
             val allLeaves = leaveRepo.getAllLeaveRequests().first()
             
-            // Filter leaves by admin's employees if adminId is provided
-            val relevantLeaves = if (adminId != null && adminId.isNotEmpty()) {
-                val employeeIds = employeeRepo.getEmployeesByAdminId(adminId).first().map { it.id }.toSet()
-                allLeaves.filter { employeeIds.contains(it.employeeId) }
-            } else {
-                allLeaves
-            }
+            // Admin sees leave stats for ONLY employees (exclude admin)
+            val employeeIds = employeeRepo.getAllEmployeesOnly().first().map { it.id }.toSet()
+            val relevantLeaves = allLeaves.filter { employeeIds.contains(it.employeeId) }
             
             val pendingCount = relevantLeaves.count { it.status == "Pending" }
             val approvedCount = relevantLeaves.count { it.status == "Approved" }
@@ -133,13 +187,9 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
         return try {
             val allTasks = taskRepo.getAllTasks().first()
             
-            // Filter tasks by admin's employees if adminId is provided
-            val relevantTasks = if (adminId != null && adminId.isNotEmpty()) {
-                val employeeIds = employeeRepo.getEmployeesByAdminId(adminId).first().map { it.id }.toSet()
-                allTasks.filter { employeeIds.contains(it.assignedToId) }
-            } else {
-                allTasks
-            }
+            // Admin sees task stats for ONLY employees (exclude admin)
+            val employeeIds = employeeRepo.getAllEmployeesOnly().first().map { it.id }.toSet()
+            val relevantTasks = allTasks.filter { employeeIds.contains(it.assignedToId) }
             
             val pending = relevantTasks.count { it.status == "Pending" }
             val inProgress = relevantTasks.count { it.status == "In Progress" }
@@ -277,7 +327,22 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     data class DailyStats(
         val presentCount: Int,
         val totalEmployees: Int,
-        val lateCount: Int
+        val lateCount: Int,
+        val absentCount: Int
+    )
+    
+    data class AttendanceDetails(
+        val presentEmployees: List<EmployeeAttendanceInfo>,
+        val lateEmployees: List<EmployeeAttendanceInfo>,
+        val absentEmployees: List<EmployeeAttendanceInfo>
+    )
+    
+    data class EmployeeAttendanceInfo(
+        val id: String,
+        val name: String,
+        val employeeId: String,
+        val checkInTime: Long,
+        val isLate: Boolean
     )
     
     data class LeaveStats(

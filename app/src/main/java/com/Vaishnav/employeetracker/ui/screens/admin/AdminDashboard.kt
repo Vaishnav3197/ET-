@@ -42,13 +42,19 @@ fun AdminDashboard(
 ) {
     val scope = rememberCoroutineScope()
     var dailyStats by remember { mutableStateOf<AdminViewModel.DailyStats?>(null) }
+    var attendanceDetails by remember { mutableStateOf<AdminViewModel.AttendanceDetails?>(null) }
     var leaveStats by remember { mutableStateOf<AdminViewModel.LeaveStats?>(null) }
     var taskStats by remember { mutableStateOf<AdminViewModel.TaskStats?>(null) }
     var departmentStats by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
     var showLogoutDialog by remember { mutableStateOf(false) }
-    var myEmployeesCount by remember { mutableStateOf(0) }
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    
+    // Real-time employee count (role=USER only, excluding admin)
+    val allEmployees by com.Vaishnav.employeetracker.data.firebase.FirebaseManager.employeeRepository
+        .getAllEmployeesOnly()
+        .collectAsState(initial = emptyList())
+    val myEmployeesCount = allEmployees.size
     
     // Get current admin's Firebase UID
     val currentAdminId = remember { 
@@ -92,17 +98,13 @@ fun AdminDashboard(
                 
                 // Pass currentAdminId to all stats methods to show only this admin's data
                 dailyStats = adminViewModel.getTodayStats(currentAdminId)
+                attendanceDetails = adminViewModel.getTodayAttendanceDetails(currentAdminId)
                 leaveStats = adminViewModel.getLeaveStats(currentAdminId)
                 taskStats = adminViewModel.getTaskStats(currentAdminId)
                 departmentStats = adminViewModel.getDepartmentStats(currentAdminId)
                 
-                // Get count of employees added by this admin - use first() instead of collect
-                val employees = com.Vaishnav.employeetracker.data.firebase.FirebaseManager.employeeRepository
-                    .getEmployeesByAdminId(currentAdminId)
-                    .first()
-                myEmployeesCount = employees.size
-                android.util.Log.d("AdminDashboard", "Admin has ${employees.size} employees")
                 android.util.Log.d("AdminDashboard", "Stats loaded - Daily: $dailyStats, Leave: $leaveStats, Task: $taskStats")
+                android.util.Log.d("AdminDashboard", "Employee count: ${allEmployees.size} (real-time, admin excluded)")
                     
                 isLoading = false
             } catch (e: Exception) {
@@ -243,15 +245,10 @@ fun AdminDashboard(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                text = "Admin Dashboard",
-                                style = MaterialTheme.typography.headlineMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
-                            )
-                            Text(
                                 text = DateTimeHelper.formatDateTime(System.currentTimeMillis()),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Color.White.copy(alpha = 0.9f)
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White
                             )
                         }
                     }
@@ -264,7 +261,7 @@ fun AdminDashboard(
             ) {
                 Spacer(modifier = Modifier.height(0.dp))
             
-            // Live Attendance Counter
+            // Quick Actions Summary
             dailyStats?.let { stats ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -272,42 +269,24 @@ fun AdminDashboard(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer
                     )
                 ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        Text(
-                            text = "Today's Attendance",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(
-                            text = "${stats.presentCount}/${stats.totalEmployees}",
-                            style = MaterialTheme.typography.displayLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Employees Present",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        
-                        if (stats.lateCount > 0) {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Surface(
-                                color = MaterialTheme.colorScheme.errorContainer,
-                                shape = MaterialTheme.shapes.small
-                            ) {
-                                Text(
-                                    text = "${stats.lateCount} Late Arrivals",
-                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                    style = MaterialTheme.typography.labelLarge,
-                                    color = MaterialTheme.colorScheme.onErrorContainer,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                        // Total Employees
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "${stats.totalEmployees}",
+                                style = MaterialTheme.typography.displayMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = "Employees",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
                     }
                 }
@@ -393,7 +372,7 @@ fun AdminDashboard(
                 AdminActionCard(
                     icon = Icons.Default.People,
                     title = "Employees",
-                    count = myEmployeesCount,
+                    count = null,  // Don't show count here - available in Employee Directory
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f),
                     onClick = onNavigateToEmployees

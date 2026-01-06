@@ -59,10 +59,31 @@ fun LeaveManagementScreen(
     
     var showMessage by remember { mutableStateOf<String?>(null) }
     
+    // Track real-time sync status
+    val isConnected by remember { mutableStateOf(true) }
+    
+    // Log when leaves update in real-time
+    LaunchedEffect(allLeaves.size) {
+        if (allLeaves.isNotEmpty()) {
+            android.util.Log.d("LeaveManagementScreen", "📡 Real-time update: ${allLeaves.size} leaves, statuses: ${allLeaves.map { it.status }}")
+        }
+    }
+    
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Leave Management", color = Color.White) },
+                title = { 
+                    Column {
+                        Text("Leave Management", color = Color.White)
+                        if (allLeaves.isNotEmpty()) {
+                            Text(
+                                text = "🔴 Live sync active",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White.copy(alpha = 0.8f)
+                            )
+                        }
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, "Back", tint = Color.White)
@@ -254,19 +275,41 @@ fun LeaveRequestItem(leave: FirebaseLeaveRequest) {
             if (leave.status != "Pending" && leave.adminRemarks != null) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Surface(
-                    color = MaterialTheme.colorScheme.surface,
+                    color = when (leave.status) {
+                        "Approved" -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                        "Rejected" -> MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                        else -> MaterialTheme.colorScheme.surface
+                    },
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
-                        Text(
-                            text = "Admin Remarks:",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = if (leave.status == "Approved") Icons.Default.CheckCircle else Icons.Default.Cancel,
+                                contentDescription = null,
+                                tint = if (leave.status == "Approved") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Admin Remarks:",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = leave.adminRemarks,
                             style = MaterialTheme.typography.bodySmall
                         )
+                        if (leave.approvalDate != null) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${if (leave.status == "Approved") "Approved" else "Rejected"} on: ${DateTimeHelper.formatDate(leave.approvalDate)}",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
             }

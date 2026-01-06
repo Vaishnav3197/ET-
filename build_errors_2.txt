@@ -1,0 +1,92 @@
+﻿> Task :app:clean
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata
+> Task :app:processDebugNavigationResources
+> Task :app:compileDebugNavigationResources
+> Task :app:generateDebugResValues
+> Task :app:processDebugGoogleServices
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeDebugNativeLibs
+> Task :app:checkDebugDuplicateClasses
+> Task :app:validateSigningDebug
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libimage_processing_util_jni.so. Run with --info option to learn more.
+
+> Task :app:mergeLibDexDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugResources
+> Task :app:mergeExtDexDebug
+
+> Task :app:compileDebugKotlin FAILED
+./gradlew : e: file:///C:/Users/ruman/AndroidStudioProj
+ects/EmployeeTracker/app/src/main/java/com/Vaishnav/emp
+loyeetracker/ui/screens/AnalyticsScreen.kt:55:64 
+Argument type mismatch: actual type is 'kotlin.Int', 
+but 'kotlin.String' was expected.
+At line:1 char:63
++ ... droid\Android Studio\jbr"; ./gradlew clean 
+assembleDebug 2>&1 | Out-F ...
++                                
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (e: file:/ 
+   //C:/U...' was expected.:String) [], RemoteExcepti  
+  on
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+e: file:///C:/Users/ruman/AndroidStudioProjects/Employe
+eTracker/app/src/main/java/com/Vaishnav/employeetracker
+/ui/screens/LoginScreen.kt:130:50 Argument type 
+mismatch: actual type is 'kotlin.Int?', but 
+'kotlin.String?' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/Employe
+eTracker/app/src/main/java/com/Vaishnav/employeetracker
+/ui/screens/admin/TaskAssignmentScreen.kt:169:40 
+Argument type mismatch: actual type is 'kotlin.Int', 
+but 'kotlin.String' was expected.
+e: file:///C:/Users/ruman/AndroidStudioProjects/Employe
+eTracker/app/src/main/java/com/Vaishnav/employeetracker
+/ui/screens/admin/TaskAssignmentScreen.kt:450:54 
+Argument type mismatch: actual type is 
+'it(kotlin.Comparable<kotlin.Nothing> & 
+java.io.Serializable)', but 'kotlin.Int' was expected.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotl
+in.compilerRunner.GradleCompilerRunnerWithWorkers$Gradl
+eKotlinCompilerWorkAction
+32 actionable tasks: 32 executed
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log 
+output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 17s

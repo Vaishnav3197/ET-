@@ -1,0 +1,801 @@
+package com.Vaishnav.employeetracker.ui.screens
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.Vaishnav.employeetracker.data.firebase.*
+import com.Vaishnav.employeetracker.viewmodel.RealtimeLeaveViewModel
+import java.text.SimpleDateFormat
+import java.util.*
+
+/**
+ * Employee Leave Management Screen with Real-Time Updates
+ * 
+ * Features:
+ * - Instant updates when admin approves/rejects
+ * - Real-time pending count
+ * - Live status changes
+ * - No manual refresh needed
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RealtimeEmployeeLeaveScreen(
+    employeeId: String,
+    employeeName: String,
+    employeeEmail: String,
+    department: String,
+    onBack: () -> Unit
+) {
+    val viewModel: RealtimeLeaveViewModel = viewModel()
+    var showNewLeaveDialog by remember { mutableStateOf(false) }
+    var selectedLeave by remember { mutableStateOf<RealtimeLeaveRequest?>(null) }
+    
+    // Real-time leave requests - automatically updates
+    val leaveRequests by viewModel.getEmployeeLeaveRequestsRealtime(employeeId)
+        .collectAsState(initial = emptyList())
+    
+    // Real-time statistics
+    val statistics by viewModel.getEmployeeLeaveStatisticsRealtime(employeeId)
+        .collectAsState(initial = LeaveStatistics())
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("My Leaves (Live)") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.Default.ArrowBack, "Back")
+                    }
+                },
+                actions = {
+                    // Real-time pending badge
+                    if (statistics.pendingRequests > 0) {
+                        Badge(
+                            modifier = Modifier.padding(end = 16.dp)
+                        ) {
+                            Text("${statistics.pendingRequests} Pending")
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { showNewLeaveDialog = true },
+                icon = { Icon(Icons.Default.Add, "New Leave") },
+                text = { Text("Request Leave") }
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Real-time indicator
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.Refresh,
+                            contentDescription = "Live",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "Live Updates - Changes appear instantly",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+            
+            // Statistics Card
+            item {
+                LeaveStatisticsCard(statistics)
+            }
+            
+            // Leave Requests List
+            items(leaveRequests) { leave ->
+                LeaveRequestCard(
+                    leave = leave,
+                    onCancel = {
+                        if (leave.canBeCancelled()) {
+                            viewModel.cancelLeaveRequest(
+                                requestId = leave.id,
+                                employeeId = employeeId,
+                                onSuccess = {
+                                    // No UI update needed - real-time listener handles it
+                                },
+                                onError = { error ->
+                                    // Show error
+                                }
+                            )
+                        }
+                    },
+                    onClick = { selectedLeave = leave }
+                )
+            }
+            
+            if (leaveRequests.isEmpty()) {
+                item {
+                    EmptyLeaveState()
+                }
+            }
+        }
+    }
+    
+    // New Leave Dialog
+    if (showNewLeaveDialog) {
+        NewLeaveRequestDialog(
+            employeeId = employeeId,
+            employeeName = employeeName,
+            employeeEmail = employeeEmail,
+            department = department,
+            viewModel = viewModel,
+            onDismiss = { showNewLeaveDialog = false }
+        )
+    }
+    
+    // Leave Details Dialog
+    selectedLeave?.let { leave ->
+        LeaveDetailsDialog(
+            leave = leave,
+            viewModel = viewModel,
+            employeeId = employeeId,
+            onDismiss = { selectedLeave = null }
+        )
+    }
+}
+
+/**
+ * Admin Leave Approval Screen with Real-Time Updates
+ * 
+ * Features:
+ * - Instantly see new leave requests from employees
+ * - Real-time pending count
+ * - Changes appear immediately after approval/rejection
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RealtimeAdminLeaveApprovalScreen(
+    adminId: String,
+    adminName: String,
+    onBack: () -> Unit
+) {
+    val viewModel: RealtimeLeaveViewModel = viewModel()
+    var selectedTab by remember { mutableIntStateOf(0) }
+    var selectedLeave by remember { mutableStateOf<RealtimeLeaveRequest?>(null) }
+    var showApproveDialog by remember { mutableStateOf(false) }
+    var showRejectDialog by remember { mutableStateOf(false) }
+    
+    // Real-time pending leaves - updates when employees submit
+    val pendingLeaves by viewModel.getPendingLeaveRequestsRealtime()
+        .collectAsState(initial = emptyList())
+    
+    // Real-time all leaves
+    val allLeaves by viewModel.getAllLeaveRequestsRealtime()
+        .collectAsState(initial = emptyList())
+    
+    // Real-time statistics
+    val statistics by viewModel.getAdminLeaveStatisticsRealtime()
+        .collectAsState(initial = LeaveStatistics())
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { 
+                    Column {
+                        Text("Leave Approvals (Live)")
+                        Text(
+                            "${pendingLeaves.size} pending",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.Default.ArrowBack, "Back")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            // Real-time indicator
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.Refresh,
+                        contentDescription = "Live",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Real-Time - New requests appear instantly",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            
+            // Statistics
+            AdminLeaveStatisticsCard(
+                statistics = statistics,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Tabs
+            TabRow(selectedTabIndex = selectedTab) {
+                Tab(
+                    selected = selectedTab == 0,
+                    onClick = { selectedTab = 0 },
+                    text = { 
+                        Text("Pending (${pendingLeaves.size})") 
+                    }
+                )
+                Tab(
+                    selected = selectedTab == 1,
+                    onClick = { selectedTab = 1 },
+                    text = { Text("All Requests") }
+                )
+            }
+            
+            // Content
+            when (selectedTab) {
+                0 -> {
+                    // Pending leaves
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(pendingLeaves) { leave ->
+                            AdminLeaveCard(
+                                leave = leave,
+                                onApprove = {
+                                    selectedLeave = leave
+                                    showApproveDialog = true
+                                },
+                                onReject = {
+                                    selectedLeave = leave
+                                    showRejectDialog = true
+                                },
+                                onClick = { selectedLeave = leave }
+                            )
+                        }
+                        
+                        if (pendingLeaves.isEmpty()) {
+                            item {
+                                EmptyPendingState()
+                            }
+                        }
+                    }
+                }
+                1 -> {
+                    // All leaves
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(allLeaves) { leave ->
+                            AdminLeaveCard(
+                                leave = leave,
+                                onApprove = null, // Already processed
+                                onReject = null,
+                                onClick = { selectedLeave = leave }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Approve Dialog
+    if (showApproveDialog && selectedLeave != null) {
+        ApproveLeaveDialog(
+            leave = selectedLeave!!,
+            adminId = adminId,
+            adminName = adminName,
+            viewModel = viewModel,
+            onDismiss = {
+                showApproveDialog = false
+                selectedLeave = null
+            }
+        )
+    }
+    
+    // Reject Dialog
+    if (showRejectDialog && selectedLeave != null) {
+        RejectLeaveDialog(
+            leave = selectedLeave!!,
+            adminId = adminId,
+            adminName = adminName,
+            viewModel = viewModel,
+            onDismiss = {
+                showRejectDialog = false
+                selectedLeave = null
+            }
+        )
+    }
+}
+
+@Composable
+private fun LeaveStatisticsCard(statistics: LeaveStatistics) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                "Leave Summary",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                StatItem("Total", statistics.totalRequests.toString(), Color(0xFF2196F3))
+                StatItem("Pending", statistics.pendingRequests.toString(), Color(0xFFFF9800))
+                StatItem("Approved", statistics.approvedRequests.toString(), Color(0xFF4CAF50))
+                StatItem("Rejected", statistics.rejectedRequests.toString(), Color(0xFFF44336))
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                StatItem("Days Taken", statistics.totalDaysTaken.toString(), Color(0xFF9C27B0))
+                StatItem("Upcoming", statistics.upcomingLeaves.toString(), Color(0xFF00BCD4))
+                StatItem("Ongoing", statistics.ongoingLeaves.toString(), Color(0xFFFF5722))
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatItem(label: String, value: String, color: Color) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
+        Text(
+            label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun LeaveRequestCard(
+    leave: RealtimeLeaveRequest,
+    onCancel: () -> Unit,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "${LeaveRequestConstants.getLeaveTypeIcon(leave.leaveType)} ${leave.leaveType}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    leave.getStatusDisplay(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Color(leave.getStatusColor())
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                "Duration: ${formatDate(leave.startDate)} - ${formatDate(leave.endDate)}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                "Total Days: ${leave.totalDays}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            
+            if (leave.canBeCancelled()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                TextButton(onClick = onCancel) {
+                    Text("Cancel Request")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdminLeaveCard(
+    leave: RealtimeLeaveRequest,
+    onApprove: (() -> Unit)?,
+    onReject: (() -> Unit)?,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        leave.employeeName,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        leave.department,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Text(
+                    leave.getStatusDisplay(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Color(leave.getStatusColor())
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                "${LeaveRequestConstants.getLeaveTypeIcon(leave.leaveType)} ${leave.leaveType} - ${leave.totalDays} days",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                "${formatDate(leave.startDate)} to ${formatDate(leave.endDate)}",
+                style = MaterialTheme.typography.bodySmall
+            )
+            
+            if (onApprove != null && onReject != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = onReject,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("Reject")
+                    }
+                    Button(
+                        onClick = onApprove,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("Approve")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdminLeaveStatisticsCard(
+    statistics: LeaveStatistics,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                "Organization Leave Overview",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Pending: ${statistics.pendingRequests}", style = MaterialTheme.typography.bodySmall)
+                Text("Approved: ${statistics.approvedRequests}", style = MaterialTheme.typography.bodySmall)
+                Text("Ongoing: ${statistics.ongoingLeaves}", style = MaterialTheme.typography.bodySmall)
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptyLeaveState() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            Icons.Default.EventBusy,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            "No leave requests yet",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            "Tap the + button to request leave",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun EmptyPendingState() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            Icons.Default.CheckCircle,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = Color(0xFF4CAF50)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            "All caught up!",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            "No pending leave requests",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+// Placeholder composables for dialogs
+@Composable
+private fun NewLeaveRequestDialog(
+    employeeId: String,
+    employeeName: String,
+    employeeEmail: String,
+    department: String,
+    viewModel: RealtimeLeaveViewModel,
+    onDismiss: () -> Unit
+) {
+    // Implementation for new leave request dialog
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("New Leave Request") },
+        text = { Text("Leave request dialog implementation") },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Close")
+            }
+        }
+    )
+}
+
+@Composable
+private fun LeaveDetailsDialog(
+    leave: RealtimeLeaveRequest,
+    viewModel: RealtimeLeaveViewModel,
+    employeeId: String,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Leave Details") },
+        text = { Text("Leave details implementation") },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Close")
+            }
+        }
+    )
+}
+
+@Composable
+private fun ApproveLeaveDialog(
+    leave: RealtimeLeaveRequest,
+    adminId: String,
+    adminName: String,
+    viewModel: RealtimeLeaveViewModel,
+    onDismiss: () -> Unit
+) {
+    var remarks by remember { mutableStateOf("") }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Approve Leave Request") },
+        text = {
+            Column {
+                Text("Approve leave for ${leave.employeeName}?")
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = remarks,
+                    onValueChange = { remarks = it },
+                    label = { Text("Remarks (optional)") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    viewModel.approveLeaveRequest(
+                        requestId = leave.id,
+                        adminId = adminId,
+                        adminName = adminName,
+                        remarks = remarks.ifBlank { null },
+                        onSuccess = onDismiss
+                    )
+                }
+            ) {
+                Text("Approve")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
+@Composable
+private fun RejectLeaveDialog(
+    leave: RealtimeLeaveRequest,
+    adminId: String,
+    adminName: String,
+    viewModel: RealtimeLeaveViewModel,
+    onDismiss: () -> Unit
+) {
+    var remarks by remember { mutableStateOf("") }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Reject Leave Request") },
+        text = {
+            Column {
+                Text("Reject leave for ${leave.employeeName}?")
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = remarks,
+                    onValueChange = { remarks = it },
+                    label = { Text("Reason for rejection *") },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = remarks.isBlank()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (remarks.isNotBlank()) {
+                        viewModel.rejectLeaveRequest(
+                            requestId = leave.id,
+                            adminId = adminId,
+                            adminName = adminName,
+                            remarks = remarks,
+                            onSuccess = onDismiss
+                        )
+                    }
+                },
+                enabled = remarks.isNotBlank()
+            ) {
+                Text("Reject")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
+private fun formatDate(timestamp: Long): String {
+    val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    return sdf.format(Date(timestamp))
+}

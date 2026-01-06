@@ -1,0 +1,161 @@
+package com.Vaishnav.employeetracker.viewmodel
+
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.Vaishnav.employeetracker.data.AppDatabase
+import com.Vaishnav.employeetracker.data.Employee
+import com.Vaishnav.employeetracker.data.EmployeeRepository
+import com.Vaishnav.employeetracker.data.Performance
+import com.Vaishnav.employeetracker.data.Task
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+
+class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: EmployeeRepository
+    
+    val allEmployees: StateFlow<List<Employee>>
+    val allTasks: StateFlow<List<Task>>
+    val allPerformances: StateFlow<List<Performance>>
+    val employeeCount: StateFlow<Int>
+    
+    private val _selectedEmployee = MutableStateFlow<Employee?>(null)
+    val selectedEmployee: StateFlow<Employee?> = _selectedEmployee.asStateFlow()
+    
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    
+    init {
+        val database = AppDatabase.getDatabase(application)
+        repository = EmployeeRepository(
+            database.employeeDao(),
+            database.taskDao(),
+            database.performanceDao()
+        )
+        
+        allEmployees = repository.getAllEmployees().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+        
+        allTasks = repository.getAllTasks().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+        
+        allPerformances = repository.getAllPerformances().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+        
+        employeeCount = repository.getEmployeeCount().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = 0
+        )
+    }
+    
+    // Employee operations
+    fun insertEmployee(employee: Employee) {
+        viewModelScope.launch {
+            repository.insertEmployee(employee)
+        }
+    }
+    
+    fun updateEmployee(employee: Employee) {
+        viewModelScope.launch {
+            repository.updateEmployee(employee)
+        }
+    }
+    
+    fun deleteEmployee(employee: Employee) {
+        viewModelScope.launch {
+            repository.deleteEmployee(employee)
+        }
+    }
+    
+    fun selectEmployee(employee: Employee?) {
+        _selectedEmployee.value = employee
+    }
+    
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+    
+    // Task operations
+    fun insertTask(task: Task) {
+        viewModelScope.launch {
+            repository.insertTask(task)
+        }
+    }
+    
+    fun updateTask(task: Task) {
+        viewModelScope.launch {
+            repository.updateTask(task)
+        }
+    }
+    
+    fun deleteTask(task: Task) {
+        viewModelScope.launch {
+            repository.deleteTask(task)
+        }
+    }
+    
+    fun getTasksByEmployee(employeeId: Int): StateFlow<List<Task>> {
+        return repository.getTasksByEmployee(employeeId).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+    }
+    
+    // Performance operations
+    fun insertPerformance(performance: Performance) {
+        viewModelScope.launch {
+            repository.insertPerformance(performance)
+        }
+    }
+    
+    fun updatePerformance(performance: Performance) {
+        viewModelScope.launch {
+            repository.updatePerformance(performance)
+        }
+    }
+    
+    fun deletePerformance(performance: Performance) {
+        viewModelScope.launch {
+            repository.deletePerformance(performance)
+        }
+    }
+    
+    fun getPerformancesByEmployee(employeeId: Int): StateFlow<List<Performance>> {
+        return repository.getPerformancesByEmployee(employeeId).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+    }
+    
+    fun getAverageRating(employeeId: Int): StateFlow<Float?> {
+        return repository.getAverageRating(employeeId).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
+    }
+    
+    fun getTopPerformers(): StateFlow<List<Performance>> {
+        return repository.getTopPerformers(3).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+    }
+}

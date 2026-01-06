@@ -46,6 +46,24 @@ class FirebaseEmployeeRepository {
             android.util.Log.d("FirebaseEmployeeRepo", "Successfully added employee with Firestore document ID: ${docRef.id}")
             android.util.Log.d("FirebaseEmployeeRepo", "Document path: ${docRef.path}")
             
+            // Auto-enroll employee in company-wide group chat
+            try {
+                android.util.Log.d("FirebaseEmployeeRepo", "Auto-enrolling employee ${docRef.id} in company_group")
+                val result = FirebaseManager.messageRepository.addGroupMember(
+                    groupId = "company_group",
+                    memberId = docRef.id,
+                    isAdmin = false
+                )
+                if (result.isSuccess) {
+                    android.util.Log.d("FirebaseEmployeeRepo", "Successfully enrolled employee in company_group")
+                } else {
+                    android.util.Log.e("FirebaseEmployeeRepo", "Failed to enroll employee: ${result.exceptionOrNull()}")
+                }
+            } catch (e: Exception) {
+                // Log but don't fail the employee creation if chat enrollment fails
+                android.util.Log.e("FirebaseEmployeeRepo", "Failed to enroll employee in company_group", e)
+            }
+            
             // Verify the document was created
             val verifyDoc = docRef.get().await()
             android.util.Log.d("FirebaseEmployeeRepo", "Verification - Document exists: ${verifyDoc.exists()}")
@@ -164,6 +182,30 @@ class FirebaseEmployeeRepository {
         awaitClose { listener.remove() }
     }
 
+    // Get ONLY employees (exclude admin) - for Employee Directory
+    fun getAllEmployeesOnly(): Flow<List<FirebaseEmployee>> = callbackFlow {
+        android.util.Log.d("FirebaseEmployeeRepo", "Setting up getAllEmployeesOnly listener (excluding admin)...")
+        val listener = employeesCollection
+            .whereEqualTo("isActive", true)
+            .whereEqualTo("role", "USER")  // Only get employees with USER role
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    android.util.Log.e("FirebaseEmployeeRepo", "❌ Error in getAllEmployeesOnly listener", error)
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val employees = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(FirebaseEmployee::class.java)?.copy(id = doc.id)
+                } ?: emptyList()
+                android.util.Log.d("FirebaseEmployeeRepo", "✅ Loaded ${employees.size} employees only (admin excluded)")
+                employees.forEachIndexed { index, emp ->
+                    android.util.Log.d("FirebaseEmployeeRepo", "  Employee $index: ${emp.name} (${emp.employeeId}) - Role: ${emp.role}, Active: ${emp.isActive}")
+                }
+                trySend(employees)
+            }
+        awaitClose { listener.remove() }
+    }
+
     // Get employees added by specific admin
     fun getEmployeesByAdminId(adminId: String): Flow<List<FirebaseEmployee>> = callbackFlow {
         android.util.Log.d("FirebaseEmployeeRepo", "Setting up getEmployeesByAdminId listener for admin: $adminId")
@@ -193,6 +235,7 @@ class FirebaseEmployeeRepository {
         android.util.Log.d("FirebaseEmployeeRepo", "Searching employees with query: $query")
         val listener = employeesCollection
             .whereEqualTo("isActive", true)
+            .whereEqualTo("role", "USER")  // Only search employees, not admin
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     android.util.Log.e("FirebaseEmployeeRepo", "Search error", error)

@@ -1,0 +1,504 @@
+package com.Vaishnav.employeetracker.ui.screens.employee
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.Vaishnav.employeetracker.data.firebase.FirebaseAuthManager
+import com.Vaishnav.employeetracker.data.firebase.FirebaseManager
+import com.Vaishnav.employeetracker.viewmodel.AttendanceViewModel
+import com.Vaishnav.employeetracker.viewmodel.TaskViewModel
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EmployeeDashboard(
+    onNavigateToAttendance: () -> Unit,
+    onNavigateToTasks: () -> Unit,
+    onNavigateToLeave: () -> Unit,
+    onNavigateToProfile: () -> Unit,
+    onNavigateToAnalytics: () -> Unit = {},
+    onNavigateToPayroll: () -> Unit = {},
+    onNavigateToShiftManagement: () -> Unit = {},
+    onNavigateToDocuments: () -> Unit = {},
+    onNavigateToMessaging: () -> Unit = {},
+    onLogout: () -> Unit,
+    taskViewModel: TaskViewModel = viewModel(),
+    attendanceViewModel: AttendanceViewModel = viewModel()
+) {
+    val scope = rememberCoroutineScope()
+    val monthlyStats by attendanceViewModel.monthlyStats.collectAsState()
+    var taskStats by remember { mutableStateOf<TaskViewModel.TaskStats?>(null) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
+    var employeeFirestoreId by remember { mutableStateOf<String?>(null) }
+    var employeeName by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    
+    // Get Firebase UID
+    val firebaseAuthManager = remember { FirebaseAuthManager.getInstance() }
+    val firebaseUserId = firebaseAuthManager.getCurrentUserId()
+    
+    // Validate Firebase user ID
+    if (firebaseUserId.isNullOrEmpty()) {
+        android.util.Log.e("EmployeeDashboard", "No Firebase user ID found")
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Error,
+                    contentDescription = "Error",
+                    modifier = Modifier.size(64.dp),
+                    tint = MaterialTheme.colorScheme.error
+                )
+                Text(
+                    text = "Error: User not authenticated",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.error
+                )
+                Button(onClick = onLogout) {
+                    Text("Return to Login")
+                }
+            }
+        }
+        return
+    }
+    
+    // Load employee data using Firebase UID
+    LaunchedEffect(firebaseUserId) {
+        scope.launch {
+            if (firebaseUserId.isNullOrEmpty()) {
+                errorMessage = "User not authenticated"
+                isLoading = false
+                return@launch
+            }
+            
+            try {
+                android.util.Log.d("EmployeeDashboard", "Loading employee for Firebase user: $firebaseUserId")
+                
+                // Get employee by Firebase UID
+                val employee = FirebaseManager.employeeRepository.getEmployeeByUserId(firebaseUserId)
+                
+                if (employee != null) {
+                    employeeFirestoreId = employee.id
+                    employeeName = employee.name
+                    android.util.Log.d("EmployeeDashboard", "Employee found with Firestore ID: ${employee.id}")
+                    android.util.Log.d("EmployeeDashboard", "Employee name: ${employee.name}, email: ${employee.email}")
+                    
+                    // Load attendance stats
+                    attendanceViewModel.loadMonthlyStats(employee.id)
+                    
+                    // Load task stats
+                    taskStats = taskViewModel.getTaskStats(employee.id)
+                    android.util.Log.d("EmployeeDashboard", "Task stats loaded: $taskStats")
+                    
+                    isLoading = false
+                } else {
+                    android.util.Log.e("EmployeeDashboard", "No employee found for Firebase user: $firebaseUserId")
+                    errorMessage = "Employee profile not found"
+                    isLoading = false
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("EmployeeDashboard", "Error loading employee data", e)
+                android.util.Log.e("EmployeeDashboard", "Stack trace:", e)
+                errorMessage = "Error loading data: ${e.message}\n${e.javaClass.simpleName}"
+                isLoading = false
+            }
+        }
+    }
+    
+    // Show loading state
+    if (isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+    
+    // Show error state
+    if (errorMessage != null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Error,
+                    contentDescription = "Error",
+                    modifier = Modifier.size(64.dp),
+                    tint = MaterialTheme.colorScheme.error
+                )
+                Text(
+                    text = errorMessage!!,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+                Button(onClick = onLogout) {
+                    Text("Return to Login")
+                }
+            }
+        }
+        return
+    }
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Employee Dashboard", color = Color.White) },
+                actions = {
+                    IconButton(onClick = onNavigateToProfile) {
+                        Icon(Icons.Default.Person, "Profile", tint = Color.White)
+                    }
+                    IconButton(onClick = { showLogoutDialog = true }) {
+                        Icon(Icons.Default.Logout, "Logout", tint = Color.White)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF6366F1)
+                )
+            )
+        },
+        containerColor = Color(0xFFF3F4F6)
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            // TrackHR Gradient Header
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .background(
+                        brush = androidx.compose.ui.graphics.Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFF6366F1),
+                                Color(0xFF8B5CF6)
+                            )
+                        )
+                    )
+                    .padding(horizontal = 24.dp, vertical = 20.dp)
+            ) {
+                Column {
+                    Spacer(modifier = Modifier.height(padding.calculateTopPadding()))
+                    Text(
+                        text = "Welcome Back!",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Here's your overview for today",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.White.copy(alpha = 0.9f)
+                    )
+                }
+            }
+            
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(0.dp))
+            
+                // Quick Actions
+                Text(
+                    text = "Quick Actions",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF111827)
+                )
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                QuickActionCard(
+                    icon = Icons.Default.AccessTime,
+                    title = "Attendance",
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToAttendance
+                )
+                QuickActionCard(
+                    icon = Icons.Default.Assignment,
+                    title = "Tasks",
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToTasks
+                )
+            }
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                QuickActionCard(
+                    icon = Icons.Default.EventNote,
+                    title = "Leave",
+                    color = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToLeave
+                )
+                QuickActionCard(
+                    icon = Icons.Default.Person,
+                    title = "Profile",
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToProfile
+                )
+            }
+            
+            // New Features Section
+            Text(
+                text = "Advanced Features",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                QuickActionCard(
+                    icon = Icons.Default.Analytics,
+                    title = "Analytics",
+                    color = Color(0xFF2196F3),
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToAnalytics
+                )
+                QuickActionCard(
+                    icon = Icons.Default.AttachMoney,
+                    title = "Payroll",
+                    color = Color(0xFF4CAF50),
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToPayroll
+                )
+            }
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                QuickActionCard(
+                    icon = Icons.Default.Schedule,
+                    title = "Shifts",
+                    color = Color(0xFFFF9800),
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToShiftManagement
+                )
+                QuickActionCard(
+                    icon = Icons.Default.Description,
+                    title = "Documents",
+                    color = Color(0xFF9C27B0),
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToDocuments
+                )
+            }
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                QuickActionCard(
+                    icon = Icons.Default.Chat,
+                    title = "Messages",
+                    color = Color(0xFF00BCD4),
+                    modifier = Modifier.weight(1f),
+                    onClick = onNavigateToMessaging
+                )
+                // Empty space to maintain grid
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            
+            // Attendance Stats
+            Text(
+                text = "This Month's Attendance",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    StatRow("Attendance", "${String.format("%.1f", monthlyStats?.attendancePercentage ?: 0.0)}%")
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+                    StatRow("Days Present", "${monthlyStats?.daysPresent ?: 0}")
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+                    StatRow("Late Days", "${monthlyStats?.lateDays ?: 0}")
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+                    StatRow("Avg Working Hours", String.format("%.1f hrs", monthlyStats?.avgWorkingHours ?: 0.0))
+                }
+            }
+            
+            // Task Stats
+            taskStats?.let { stats ->
+                Text(
+                    text = "Task Progress",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Completion Rate: ${String.format("%.1f", stats.completionRate)}%",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LinearProgressIndicator(
+                            progress = (stats.completionRate / 100f).coerceIn(0f, 1f),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp),
+                            color = MaterialTheme.colorScheme.primary,
+                            trackColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text("Completed: ${stats.completedCount}")
+                            Text("Total: ${stats.totalCount}")
+                        }
+                    }
+                }
+            }
+        }
+        }
+    }
+    
+    // Logout Confirmation Dialog
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            icon = { Icon(Icons.Default.Logout, null, tint = MaterialTheme.colorScheme.error) },
+            title = { Text("Confirm Logout") },
+            text = { Text("Are you sure you want to logout from your account?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showLogoutDialog = false
+                        onLogout()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text("Logout")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLogoutDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun QuickActionCard(
+    icon: ImageVector,
+    title: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    var isClicked by remember { mutableStateOf(false) }
+    
+    Card(
+        modifier = modifier
+            .aspectRatio(1f)
+            .clickable(
+                enabled = !isClicked,
+                onClick = { 
+                    isClicked = true
+                    onClick()
+                }
+            ),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .background(
+                        color = Color(0xFFEEF2FF),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    modifier = Modifier.size(32.dp),
+                    tint = Color(0xFF6366F1)
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color(0xFF111827),
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun StatRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}

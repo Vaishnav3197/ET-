@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.Vaishnav.employeetracker.data.Employee
+import com.Vaishnav.employeetracker.data.DepartmentDesignation
 import com.Vaishnav.employeetracker.utils.DateTimeHelper
 import com.Vaishnav.employeetracker.viewmodel.EmployeeViewModel
 import kotlinx.coroutines.launch
@@ -36,21 +38,39 @@ fun EmployeeDirectoryScreen(
 ) {
     val scope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
+    var selectedDepartment by remember { mutableStateOf("All") }
     var showAddDialog by remember { mutableStateOf(false) }
     var selectedEmployee by remember { mutableStateOf<Employee?>(null) }
     var showMessage by remember { mutableStateOf<String?>(null) }
     var showCredentialsDialog by remember { mutableStateOf(false) }
     var generatedCredentials by remember { mutableStateOf<Pair<String, String>?>(null) }
     var showClearAllDialog by remember { mutableStateOf(false) }
+    var showDepartmentFilter by remember { mutableStateOf(false) }
     
-    // Get current admin's Firebase UID
-    val currentAdminId = remember { com.Vaishnav.employeetracker.data.firebase.FirebaseAuthManager.getInstance().getCurrentUserId() ?: "" }
-    
+    // Admin sees ALL employees - but NOT admin account itself
     val employees by if (searchQuery.isBlank()) {
-        employeeViewModel.getEmployeesByAdminId(currentAdminId).collectAsState(initial = emptyList())
+        employeeViewModel.getAllEmployeesOnly().collectAsState(initial = emptyList())
     } else {
         employeeViewModel.searchEmployees(searchQuery).collectAsState(initial = emptyList())
     }
+    
+    // Get current admin's Firebase UID for creating new employees
+    val currentAdminId = remember { com.Vaishnav.employeetracker.data.firebase.FirebaseAuthManager.getInstance().getCurrentUserId() ?: "" }
+    
+    // Filter by department
+    val filteredEmployees = if (selectedDepartment == "All") {
+        employees
+    } else {
+        employees.filter { it.department == selectedDepartment }
+    }
+    
+    // Group by department and sort
+    val groupedEmployees = filteredEmployees
+        .groupBy { it.department }
+        .mapValues { (_, empList) -> empList.sortedBy { it.designation } }
+        .toSortedMap()
+    
+    val departments = listOf("All") + DepartmentDesignation.getDepartmentNames()
     
     // Debug logging
     LaunchedEffect(employees) {
@@ -70,6 +90,13 @@ fun EmployeeDirectoryScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = { showDepartmentFilter = !showDepartmentFilter }) {
+                        Icon(
+                            Icons.Default.FilterList, 
+                            "Filter by Department", 
+                            tint = androidx.compose.ui.graphics.Color.White
+                        )
+                    }
                     IconButton(onClick = { showClearAllDialog = true }) {
                         Icon(Icons.Default.DeleteSweep, "Clear All Employees", tint = androidx.compose.ui.graphics.Color.White)
                     }
@@ -102,11 +129,11 @@ fun EmployeeDirectoryScreen(
                 }
             }
         }
-    ) { padding ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(paddingValues)
         ) {
             // Search Bar
             OutlinedTextField(
@@ -127,14 +154,42 @@ fun EmployeeDirectoryScreen(
                 singleLine = true
             )
             
-            if (employees.isEmpty()) {
+            // Department Filter Chips
+            if (showDepartmentFilter) {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(departments) { dept ->
+                        FilterChip(
+                            selected = selectedDepartment == dept,
+                            onClick = { selectedDepartment = dept },
+                            label = { 
+                                Text(
+                                    text = if (dept == "All") "All Departments" else dept,
+                                    style = MaterialTheme.typography.labelMedium
+                                ) 
+                            },
+                            leadingIcon = if (selectedDepartment == dept) {
+                                { Icon(Icons.Default.Check, null, modifier = Modifier.size(16.dp)) }
+                            } else null
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            
+            // Employee List
+            if (filteredEmployees.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
-                            imageVector = Icons.Default.PersonOff,
+                            Icons.Default.PersonOutline,
                             contentDescription = null,
                             modifier = Modifier.size(64.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -151,20 +206,59 @@ fun EmployeeDirectoryScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(employees, key = { it.id }) { employee ->
-                        EmployeeDirectoryItem(
-                            employee = employee,
-                            onClick = { selectedEmployee = employee },
-                            onDeactivate = {
-                                scope.launch {
-                                    val result = employeeViewModel.deactivateEmployee(employee.id)
-                                    result.onSuccess { showMessage = it }
-                                        .onFailure { showMessage = it.message }
+                    // Display employees grouped by department
+                    groupedEmployees.forEach { (department, deptEmployees) ->
+                        item {
+                            // Department Header
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = MaterialTheme.shapes.small
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Default.BusinessCenter,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = department,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    Text(
+                                        text = "${deptEmployees.size} ${if (deptEmployees.size == 1) "employee" else "employees"}",
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
                                 }
                             }
-                        )
+                        }
+                        
+                        items(deptEmployees, key = { it.id }) { employee ->
+                            EmployeeDirectoryItem(
+                                employee = employee,
+                                onClick = { selectedEmployee = employee },
+                                onDeactivate = {
+                                    scope.launch {
+                                        val result = employeeViewModel.deactivateEmployee(employee.id)
+                                        result.onSuccess { showMessage = it }
+                                            .onFailure { showMessage = it.message }
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -401,6 +495,14 @@ fun AddEmployeeDialog(
     var joiningDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
     var showDatePicker by remember { mutableStateOf(false) }
     
+    // Department dropdown state
+    var departmentExpanded by remember { mutableStateOf(false) }
+    var availableDesignations by remember { mutableStateOf<List<String>>(emptyList()) }
+    var designationExpanded by remember { mutableStateOf(false) }
+    var showValidationError by remember { mutableStateOf(false) }
+    
+    val departments = DepartmentDesignation.getDepartmentNames()
+    
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Add New Employee") },
@@ -443,18 +545,87 @@ fun AddEmployeeDialog(
                     label = { Text("Employee ID") },
                     modifier = Modifier.fillMaxWidth()
                 )
-                OutlinedTextField(
-                    value = designation,
-                    onValueChange = { designation = it },
-                    label = { Text("Designation") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = department,
-                    onValueChange = { department = it },
-                    label = { Text("Department") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                
+                // Department Dropdown
+                ExposedDropdownMenuBox(
+                    expanded = departmentExpanded,
+                    onExpandedChange = { departmentExpanded = it }
+                ) {
+                    OutlinedTextField(
+                        value = department,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Department") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = departmentExpanded) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
+                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                    )
+                    ExposedDropdownMenu(
+                        expanded = departmentExpanded,
+                        onDismissRequest = { departmentExpanded = false }
+                    ) {
+                        departments.forEach { dept ->
+                            DropdownMenuItem(
+                                text = { Text(dept) },
+                                onClick = {
+                                    department = dept
+                                    departmentExpanded = false
+                                    // Update available designations
+                                    availableDesignations = DepartmentDesignation.getDesignationsForDepartment(dept)
+                                    // Reset designation when department changes
+                                    designation = ""
+                                    showValidationError = false
+                                }
+                            )
+                        }
+                    }
+                }
+                
+                // Designation Dropdown (enabled only if department is selected)
+                ExposedDropdownMenuBox(
+                    expanded = designationExpanded,
+                    onExpandedChange = { designationExpanded = it && department.isNotEmpty() }
+                ) {
+                    OutlinedTextField(
+                        value = designation,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Designation") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = designationExpanded) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
+                        enabled = department.isNotEmpty(),
+                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                        isError = showValidationError,
+                        supportingText = {
+                            if (showValidationError) {
+                                Text("Please select a valid designation for this department")
+                            } else if (department.isEmpty()) {
+                                Text("Select department first")
+                            }
+                        }
+                    )
+                    if (department.isNotEmpty()) {
+                        ExposedDropdownMenu(
+                            expanded = designationExpanded,
+                            onDismissRequest = { designationExpanded = false }
+                        ) {
+                            availableDesignations.forEach { desig ->
+                                DropdownMenuItem(
+                                    text = { Text(desig) },
+                                    onClick = {
+                                        designation = desig
+                                        designationExpanded = false
+                                        showValidationError = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
                 
                 // Date Picker Field
                 OutlinedTextField(
@@ -508,11 +679,16 @@ fun AddEmployeeDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    if (phone.length == 10) {
+                    // Validate department-designation combination
+                    if (phone.length == 10 && 
+                        DepartmentDesignation.isValidCombination(department, designation)) {
                         onAdd(name, email, phone, designation, department, employeeId, joiningDateMillis)
+                    } else if (!DepartmentDesignation.isValidCombination(department, designation)) {
+                        showValidationError = true
                     }
                 },
-                enabled = name.isNotEmpty() && email.isNotEmpty() && phone.length == 10
+                enabled = name.isNotEmpty() && email.isNotEmpty() && phone.length == 10 && 
+                         department.isNotEmpty() && designation.isNotEmpty()
             ) {
                 Text("Add")
             }

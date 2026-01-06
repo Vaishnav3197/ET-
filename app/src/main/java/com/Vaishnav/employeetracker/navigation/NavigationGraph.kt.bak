@@ -1,0 +1,167 @@
+package com.Vaishnav.employeetracker.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.Vaishnav.employeetracker.ui.screens.*
+import com.Vaishnav.employeetracker.viewmodel.EmployeeViewModel
+import com.Vaishnav.employeetracker.data.UserRole
+import com.Vaishnav.employeetracker.data.AuthManager
+
+@Composable
+fun NavigationGraph(
+    navController: NavHostController,
+    viewModel: EmployeeViewModel
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Login.route
+    ) {
+        composable(Screen.Login.route) {
+            LoginScreen(
+                onLoginSuccess = { role ->
+                    val destination = if (role == UserRole.ADMIN) {
+                        Screen.AdminDashboard.route
+                    } else {
+                        Screen.Dashboard.route
+                    }
+                    navController.navigate(destination) {
+                        // Remove login screen from back stack
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        composable(Screen.AdminDashboard.route) {
+            AdminDashboardScreen(
+                viewModel = viewModel,
+                onNavigateToEmployeeList = { navController.navigate(Screen.EmployeeList.route) },
+                onNavigateToAnalytics = { navController.navigate(Screen.Analytics.route) },
+                onNavigateToTasks = { navController.navigate(Screen.TaskList.route) },
+                onNavigateToAdminPanel = { navController.navigate(Screen.AdminPanel.route) },
+                onLogout = {
+                    AuthManager.logout()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        composable(Screen.AdminPanel.route) {
+            AdminPanelScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(Screen.Dashboard.route) {
+            DashboardScreen(
+                viewModel = viewModel,
+                onNavigateToEmployeeList = { navController.navigate(Screen.EmployeeList.route) },
+                onNavigateToAnalytics = { navController.navigate(Screen.Analytics.route) },
+                onNavigateToTasks = { navController.navigate(Screen.TaskList.route) },
+                onLogout = {
+                    AuthManager.logout()
+                    navController.navigate(Screen.Login.route) {
+                        // Clear entire back stack
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        composable(Screen.EmployeeList.route) {
+            EmployeeListScreen(
+                viewModel = viewModel,
+                onNavigateToDetail = { employeeId ->
+                    navController.navigate(Screen.EmployeeDetail.createRoute(employeeId))
+                },
+                onNavigateToAdd = { navController.navigate(Screen.AddEmployee.route) },
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(
+            route = Screen.EmployeeDetail.route,
+            arguments = listOf(navArgument("employeeId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val employeeId = backStackEntry.arguments?.getInt("employeeId") ?: 0
+            EmployeeDetailScreen(
+                viewModel = viewModel,
+                employeeId = employeeId,
+                onNavigateToEdit = { id ->
+                    navController.navigate(Screen.EditEmployee.createRoute(id))
+                },
+                onNavigateToAddTask = { id ->
+                    navController.navigate(Screen.AddTask.createRoute(id))
+                },
+                onNavigateToAddPerformance = { id ->
+                    navController.navigate(Screen.AddPerformance.createRoute(id))
+                },
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(Screen.AddEmployee.route) {
+            AddEmployeeScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(
+            route = Screen.EditEmployee.route,
+            arguments = listOf(navArgument("employeeId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val employeeId = backStackEntry.arguments?.getInt("employeeId") ?: 0
+            EditEmployeeScreen(
+                viewModel = viewModel,
+                employeeId = employeeId,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(Screen.TaskList.route) {
+            TaskListScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(
+            route = Screen.AddTask.route,
+            arguments = listOf(navArgument("employeeId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val employeeId = backStackEntry.arguments?.getInt("employeeId") ?: 0
+            AddTaskScreen(
+                viewModel = viewModel,
+                employeeId = employeeId,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(
+            route = Screen.AddPerformance.route,
+            arguments = listOf(navArgument("employeeId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val employeeId = backStackEntry.arguments?.getInt("employeeId") ?: 0
+            AddPerformanceScreen(
+                viewModel = viewModel,
+                employeeId = employeeId,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(Screen.Analytics.route) {
+            AnalyticsScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+    }
+}

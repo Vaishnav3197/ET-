@@ -1,0 +1,137 @@
+package com.Vaishnav.employeetracker.viewmodel
+
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.Vaishnav.employeetracker.data.firebase.FirebaseManager
+import com.Vaishnav.employeetracker.data.firebase.FirebaseAttendance
+import com.Vaishnav.employeetracker.data.firebase.FirebaseEmployee
+import com.Vaishnav.employeetracker.utils.DateTimeHelper
+import com.Vaishnav.employeetracker.utils.LocationHelper
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import java.util.Date
+
+class AttendanceViewModel(application: Application) : AndroidViewModel(application) {
+    private val attendanceRepo = FirebaseManager.attendanceRepository
+    private val employeeRepo = FirebaseManager.employeeRepository
+    private val notificationRepo = FirebaseManager.notificationRepository
+    
+    private val _attendanceStatus = MutableStateFlow("Not Checked In")
+    val attendanceStatus: StateFlow<String> = _attendanceStatus.asStateFlow()
+    
+    private val _todayAttendance = MutableStateFlow<FirebaseAttendance?>(null)
+    val todayAttendance: StateFlow<FirebaseAttendance?> = _todayAttendance.asStateFlow()
+    
+    private val _monthlyStats = MutableStateFlow<MonthlyStats?>(null)
+    val monthlyStats: StateFlow<MonthlyStats?> = _monthlyStats.asStateFlow()
+    
+    data class MonthlyStats(
+        val attendancePercentage: Float,
+        val daysPresent: Int,
+        val lateDays: Int,
+        val avgWorkingHours: Float
+    )
+    
+    fun loadTodayAttendance(employeeId: String) {
+        viewModelScope.launch {
+            val today = DateTimeHelper.getStartOfDay()
+            attendanceRepo.getTodayAttendance(employeeId, today).collect { attendance ->
+                _todayAttendance.value = attendance
+                _attendanceStatus.value = when {
+                    attendance == null -> "Not Checked In"
+                    attendance.checkOutTime == null -> "Checked In"
+                    else -> "Checked Out"
+                }
+            }
+        }
+    }
+    
+    fun loadMonthlyStats(employeeId: String) {
+        viewModelScope.launch {
+            val (month, year) = DateTimeHelper.getCurrentMonthYear()
+            val startDate = DateTimeHelper.getMonthStart(month, year)
+            val endDate = DateTimeHelper.getMonthEnd(month, year)
+            
+            val stats = attendanceRepo.getMonthlyStats(employeeId, startDate, endDate)
+            if (stats != null) {
+                val totalDays = DateTimeHelper.getWorkingDaysBetween(startDate, endDate)
+                _monthlyStats.value = MonthlyStats(
+                    attendancePercentage = if (totalDays > 0) (stats.presentDays.toFloat() / totalDays) * 100 else 0f,
+                    daysPresent = stats.presentDays,
+                    lateDays = stats.lateDays,
+                    avgWorkingHours = stats.avgWorkingHours
+                )
+            }
+        }
+    }
+    
+    suspend fun checkIn(
+        employeeId: String,
+        employeeName: String,
+        location: String,
+        photoUri: String?
+    ): Result<String> {
+        return try {
+            val today = DateTimeHelper.getStartOfDay()
+            val existing = attendanceRepo.getTodayAttendance(employeeId, today).first()
+            
+            if (existing != null) {
+                return Result.failure(Exception("Already checked in today"))
+            }
+            
+            val checkInTime = Date()
+            val isLate = DateTimeHelper.isLateCheckIn(checkInTime.time)
+            
+            val attendance = FirebaseAttendance(
+                id = "",
+                employeeId = employeeId,
+                date = today,
+                checkInTime = checkInTime,
+                checkOutTime = null,
+                checkInLocation = location,
+                checkOutLocation = null,
+                checkInPhotoUri = photoUri,
+                totalWorkingHours = null,
+                isLate = isLate,
+                status = "Checked In"
+            )
+            
+            attendanceRepo.checkIn(attendance)
+            loadTodayAttendance(employeeId)
+            
+            Result.success("Checked in successfully at ${DateTimeHelper.formatTime(checkInTime.time)}")
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+    
+    suspend fun checkOut(employeeId: String, location: String): Result<String> {
+        return try {
+            val today = DateTimeHelper.getStartOfDay()
+            val attendance = attendanceRepo.getTodayAttendance(employeeId, today).first()
+                ?: return Result.failure(Exception("No check-in found for today"))
+            
+            if (attendance.checkOutTime != null) {
+                return Result.failure(Exception("Already checked out today"))
+            }
+            
+            val checkOutTime = Date()
+            val workingHours = DateTimeHelper.calculateWorkingHours(
+                attendance.checkInTime?.time ?: 0L,
+                checkOutTime.time
+            )
+            
+            attendanceRepo.checkOut(attendance.id, location, workingHours)
+            loadTodayAttendance(employeeId)
+            
+            Result.success("Checked out successfully. Working hours: ${DateTimeHelper.formatWorkingHours(workingHours)}")
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+    
+    fun getAttendanceHistory(employeeId: String): Flow<List<FirebaseAttendance>> {
+        return attendanceRepo.getAttendanceHistory(employeeId)
+    }
+}

@@ -1,0 +1,341 @@
+package com.Vaishnav.employeetracker.viewmodel
+
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import com.Vaishnav.employeetracker.data.firebase.FirebaseManager
+import com.Vaishnav.employeetracker.utils.DateTimeHelper
+import kotlinx.coroutines.flow.*
+import java.util.Calendar
+
+/**
+ * Real-time Analytics ViewModel with Firebase listeners
+ * All methods return Flows that automatically update when Firebase data changes
+ */
+class AnalyticsViewModelRealtime(application: Application) : AndroidViewModel(application) {
+    private val attendanceRepo = FirebaseManager.attendanceRepository
+    private val employeeRepo = FirebaseManager.employeeRepository
+    private val performanceRepo = FirebaseManager.performanceRepository
+    private val taskRepo = FirebaseManager.taskRepository
+    private val timeLogRepo = FirebaseManager.timeLogRepository
+    
+    /**
+     * Real-time Monthly Attendance Trend for an employee
+     * Returns a Flow that emits List<Pair<Day, AttendanceCount>> whenever attendance changes
+     */
+    fun getMonthlyAttendanceTrendRealtime(employeeId: String, month: Int, year: Int): Flow<List<Pair<Int, Int>>> {
+        val startDate = DateTimeHelper.getMonthStart(month, year)
+        val endDate = DateTimeHelper.getMonthEnd(month, year)
+        
+        return attendanceRepo.getAttendanceForPeriod(employeeId, startDate, endDate)
+            .map { attendanceList ->
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month - 1, 1)
+                val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                
+                val trend = mutableListOf<Pair<Int, Int>>()
+                for (day in 1..daysInMonth) {
+                    val dayAttendance = attendanceList.count { record ->
+                        val recordCalendar = Calendar.getInstance()
+                        recordCalendar.timeInMillis = record.date
+                        recordCalendar.get(Calendar.DAY_OF_MONTH) == day
+                    }
+                    trend.add(Pair(day, if (dayAttendance > 0) 1 else 0))
+                }
+                trend
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in monthly attendance trend", e)
+                emit(emptyList())
+            }
+    }
+    
+    /**
+     * Real-time Department Attendance Stats
+     * Returns a Flow that emits Map<Department, Pair<PresentCount, TotalCount>>
+     */
+    fun getDepartmentAttendanceStatsRealtime(date: Long): Flow<Map<String, Pair<Int, Int>>> {
+        return combine(
+            employeeRepo.getAllActiveEmployees(),
+            attendanceRepo.getDailyAttendance(date)
+        ) { employees, attendance ->
+            val departmentStats = mutableMapOf<String, Pair<Int, Int>>()
+            
+            employees.groupBy { it.department }.forEach { (department, deptEmployees) ->
+                val presentCount = attendance.count { att ->
+                    deptEmployees.any { emp -> emp.id == att.employeeId }
+                }
+                val totalCount = deptEmployees.size
+                departmentStats[department] = Pair(presentCount, totalCount)
+            }
+            
+            departmentStats
+        }.catch { e ->
+            android.util.Log.e("AnalyticsVM", "Error in department stats", e)
+            emit(emptyMap())
+        }
+    }
+    
+    /**
+     * Real-time Task Completion Rate for an employee
+     * Returns a Flow that emits completion percentage whenever tasks change
+     */
+    fun getTaskCompletionRateRealtime(employeeId: String, month: Int, year: Int): Flow<Float> {
+        val startDate = DateTimeHelper.getMonthStart(month, year)
+        val endDate = DateTimeHelper.getMonthEnd(month, year)
+        
+        return taskRepo.getTasksByEmployee(employeeId)
+            .map { tasks ->
+                val monthTasks = tasks.filter { task ->
+                    task.createdAt?.time?.let { it in startDate..endDate } ?: false
+                }
+                
+                if (monthTasks.isEmpty()) {
+                    0f
+                } else {
+                    val completedTasks = monthTasks.count { it.status == "Completed" }
+                    (completedTasks.toFloat() / monthTasks.size) * 100
+                }
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in task completion rate", e)
+                emit(0f)
+            }
+    }
+    
+    /**
+     * Real-time Weekly Work Hours for an employee
+     * Returns a Flow that emits List<Pair<DayName, Hours>> for the week
+     */
+    fun getWeeklyWorkHoursRealtime(employeeId: String, weekStartDate: Long): Flow<List<Pair<String, Float>>> {
+        val weekEndDate = weekStartDate + (7 * 24 * 60 * 60 * 1000L)
+        
+        return attendanceRepo.getAttendanceForPeriod(employeeId, weekStartDate, weekEndDate)
+            .map { attendanceList ->
+                val weeklyHours = mutableListOf<Pair<String, Float>>()
+                val calendar = Calendar.getInstance()
+                
+                for (day in 0..6) {
+                    calendar.timeInMillis = weekStartDate
+                    calendar.add(Calendar.DAY_OF_MONTH, day)
+                    
+                    val dayStart = DateTimeHelper.getStartOfDay(calendar.timeInMillis)
+                    val dayEnd = DateTimeHelper.getEndOfDay(calendar.timeInMillis)
+                    
+                    val dayAttendance = attendanceList.filter { att ->
+                        att.date in dayStart..dayEnd
+                    }
+                    
+                    val hours = dayAttendance.sumOf { att ->
+                        val checkOut = att.checkOutTime
+                        val checkIn = att.checkInTime
+                        if (checkOut != null && checkIn != null) {
+                            DateTimeHelper.calculateWorkingHours(checkIn.time, checkOut.time).toDouble()
+                        } else {
+                            0.0
+                        }
+                    }.toFloat()
+                    
+                    val dayName = DateTimeHelper.getDayName(calendar.timeInMillis)
+                    weeklyHours.add(Pair(dayName, hours))
+                }
+                
+                weeklyHours
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in weekly work hours", e)
+                emit(emptyList())
+            }
+    }
+    
+    /**
+     * Real-time Late Arrival Trend for the month
+     * Returns a Flow that emits Map<Day, LateCount> for all employees
+     */
+    fun getLateArrivalTrendRealtime(month: Int, year: Int): Flow<Map<Int, Int>> {
+        val startDate = DateTimeHelper.getMonthStart(month, year)
+        val endDate = DateTimeHelper.getMonthEnd(month, year)
+        
+        // Get all attendance for the month (empty employeeId means all employees)
+        return attendanceRepo.getAttendanceForPeriod("", startDate, endDate)
+            .map { attendanceList ->
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month - 1, 1)
+                val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                
+                val lateTrend = mutableMapOf<Int, Int>()
+                
+                for (day in 1..daysInMonth) {
+                    val lateCount = attendanceList.count { att ->
+                        val recordCalendar = Calendar.getInstance()
+                        recordCalendar.timeInMillis = att.date
+                        recordCalendar.get(Calendar.DAY_OF_MONTH) == day && att.isLate
+                    }
+                    lateTrend[day] = lateCount
+                }
+                
+                lateTrend
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in late arrival trend", e)
+                emit(emptyMap())
+            }
+    }
+    
+    /**
+     * Real-time Total Tasks Summary for an employee
+     * Returns a Flow that emits task counts by status
+     */
+    fun getTasksSummaryRealtime(employeeId: String): Flow<Map<String, Int>> {
+        return taskRepo.getTasksByEmployee(employeeId)
+            .map { tasks ->
+                mapOf(
+                    "Total" to tasks.size,
+                    "Pending" to tasks.count { it.status == "Pending" },
+                    "In Progress" to tasks.count { it.status == "In Progress" },
+                    "Completed" to tasks.count { it.status == "Completed" },
+                    "Overdue" to tasks.count { 
+                        it.status != "Completed" && it.deadline > 0 && it.deadline < System.currentTimeMillis()
+                    }
+                )
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in tasks summary", e)
+                emit(emptyMap())
+            }
+    }
+    
+    /**
+     * Real-time Monthly Attendance Summary for an employee
+     * Returns a Flow that emits attendance statistics for the month
+     */
+    fun getMonthlyAttendanceSummaryRealtime(employeeId: String, month: Int, year: Int): Flow<Map<String, Int>> {
+        val startDate = DateTimeHelper.getMonthStart(month, year)
+        val endDate = DateTimeHelper.getMonthEnd(month, year)
+        
+        return attendanceRepo.getAttendanceForPeriod(employeeId, startDate, endDate)
+            .map { attendanceList ->
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month - 1, 1)
+                val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                
+                mapOf(
+                    "Total Days" to daysInMonth,
+                    "Present" to attendanceList.size,
+                    "Absent" to (daysInMonth - attendanceList.size),
+                    "Late Arrivals" to attendanceList.count { it.isLate },
+                    "On Time" to attendanceList.count { !it.isLate }
+                )
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in monthly attendance summary", e)
+                emit(emptyMap())
+            }
+    }
+    
+    /**
+     * Real-time Total Work Hours for an employee (current month)
+     * Returns a Flow that emits total hours worked
+     */
+    fun getTotalWorkHoursRealtime(employeeId: String): Flow<Float> {
+        val calendar = Calendar.getInstance()
+        val month = calendar.get(Calendar.MONTH) + 1
+        val year = calendar.get(Calendar.YEAR)
+        val startDate = DateTimeHelper.getMonthStart(month, year)
+        val endDate = DateTimeHelper.getMonthEnd(month, year)
+        
+        return attendanceRepo.getAttendanceForPeriod(employeeId, startDate, endDate)
+            .map { attendanceList ->
+                attendanceList.sumOf { att ->
+                    val checkOut = att.checkOutTime
+                    val checkIn = att.checkInTime
+                    if (checkOut != null && checkIn != null) {
+                        DateTimeHelper.calculateWorkingHours(checkIn.time, checkOut.time).toDouble()
+                    } else {
+                        0.0
+                    }
+                }.toFloat()
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in total work hours", e)
+                emit(0f)
+            }
+    }
+    
+    /**
+     * Real-time Overtime Hours for an employee (current month)
+     * Returns a Flow that emits total overtime hours
+     */
+    fun getOvertimeHoursRealtime(employeeId: String): Flow<Float> {
+        val calendar = Calendar.getInstance()
+        val month = calendar.get(Calendar.MONTH) + 1
+        val year = calendar.get(Calendar.YEAR)
+        
+        return timeLogRepo.getTimeLogsForMonth(employeeId, month, year)
+            .map { timeLogs ->
+                timeLogs.sumOf { it.overtimeHours.toDouble() }.toFloat()
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in overtime hours", e)
+                emit(0f)
+            }
+    }
+    
+    /**
+     * Real-time Performance Average (if performance ratings exist)
+     * Returns a Flow that emits average rating whenever performance changes
+     */
+    fun getPerformanceAverageRealtime(employeeId: String): Flow<Float> {
+        return performanceRepo.getEmployeeRatings(employeeId)
+            .map { ratings ->
+                if (ratings.isEmpty()) {
+                    0f
+                } else {
+                    ratings.map { it.rating }.average().toFloat()
+                }
+            }
+            .catch { e ->
+                android.util.Log.e("AnalyticsVM", "Error in performance average", e)
+                emit(0f)
+            }
+    }
+    
+    /**
+     * Real-time All Employees Analytics (for admin dashboard)
+     * Combines multiple flows for comprehensive dashboard view
+     */
+    fun getAllEmployeesAnalyticsRealtime(): Flow<EmployeeAnalyticsSummary> {
+        return combine(
+            employeeRepo.getAllActiveEmployees(),
+            attendanceRepo.getDailyAttendance(System.currentTimeMillis()),
+            taskRepo.getAllTasks()
+        ) { employees, todayAttendance, allTasks ->
+            EmployeeAnalyticsSummary(
+                totalEmployees = employees.size,
+                presentToday = todayAttendance.size,
+                absentToday = employees.size - todayAttendance.size,
+                lateToday = todayAttendance.count { it.isLate },
+                totalTasks = allTasks.size,
+                completedTasks = allTasks.count { it.status == "Completed" },
+                pendingTasks = allTasks.count { it.status == "Pending" },
+                inProgressTasks = allTasks.count { it.status == "In Progress" }
+            )
+        }.catch { e ->
+            android.util.Log.e("AnalyticsVM", "Error in all employees analytics", e)
+            emit(EmployeeAnalyticsSummary())
+        }
+    }
+}
+
+/**
+ * Data class for all employees analytics summary
+ */
+data class EmployeeAnalyticsSummary(
+    val totalEmployees: Int = 0,
+    val presentToday: Int = 0,
+    val absentToday: Int = 0,
+    val lateToday: Int = 0,
+    val totalTasks: Int = 0,
+    val completedTasks: Int = 0,
+    val pendingTasks: Int = 0,
+    val inProgressTasks: Int = 0
+)

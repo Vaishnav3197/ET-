@@ -27,9 +27,9 @@ class LeaveViewModel(application: Application) : AndroidViewModel(application) {
     
     fun getPendingLeaves(adminId: String? = null): Flow<List<FirebaseLeaveRequest>> {
         return if (adminId != null) {
-            // Filter by admin's employees with continuous observation
+            // Admin sees ONLY employees' pending leaves (exclude admin)
             leaveRepo.getPendingLeaveRequests().map { allPending ->
-                employeeRepo.getEmployeesByAdminId(adminId).first().let { employees ->
+                employeeRepo.getAllEmployeesOnly().first().let { employees ->
                     val employeeIds = employees.map { it.id }.toSet()
                     allPending.filter { employeeIds.contains(it.employeeId) }
                 }
@@ -42,8 +42,8 @@ class LeaveViewModel(application: Application) : AndroidViewModel(application) {
     
     suspend fun getPendingCount(adminId: String? = null): Int {
         return if (adminId != null) {
-            // Count only admin's employees
-            val employees = employeeRepo.getEmployeesByAdminId(adminId).first()
+            // Admin counts ONLY employees' pending leaves (exclude admin)
+            val employees = employeeRepo.getAllEmployeesOnly().first()
             val employeeIds = employees.map { it.id }.toSet()
             leaveRepo.getAllLeaveRequests().first().count { 
                 it.status == "Pending" && employeeIds.contains(it.employeeId) 

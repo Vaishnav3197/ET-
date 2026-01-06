@@ -1,0 +1,469 @@
+package com.Vaishnav.employeetracker.ui.screens
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.Vaishnav.employeetracker.viewmodel.AnalyticsViewModelRealtime
+import java.util.Calendar
+
+/**
+ * Example Real-Time Analytics Screen
+ * Demonstrates how to use Flow-based analytics with automatic updates
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RealTimeAnalyticsScreen(
+    employeeId: String,
+    onBack: () -> Unit
+) {
+    val viewModel: AnalyticsViewModelRealtime = viewModel()
+    val calendar = Calendar.getInstance()
+    val currentMonth = calendar.get(Calendar.MONTH) + 1
+    val currentYear = calendar.get(Calendar.YEAR)
+    
+    // Real-time data streams using collectAsState() - automatically updates
+    val monthlyTrend by viewModel.getMonthlyAttendanceTrendRealtime(
+        employeeId, currentMonth, currentYear
+    ).collectAsState(initial = emptyList())
+    
+    val tasksSummary by viewModel.getTasksSummaryRealtime(
+        employeeId
+    ).collectAsState(initial = emptyMap())
+    
+    val attendanceSummary by viewModel.getMonthlyAttendanceSummaryRealtime(
+        employeeId, currentMonth, currentYear
+    ).collectAsState(initial = emptyMap())
+    
+    val totalWorkHours by viewModel.getTotalWorkHoursRealtime(
+        employeeId
+    ).collectAsState(initial = 0f)
+    
+    val taskCompletionRate by viewModel.getTaskCompletionRateRealtime(
+        employeeId, currentMonth, currentYear
+    ).collectAsState(initial = 0f)
+    
+    val performanceAverage by viewModel.getPerformanceAverageRealtime(
+        employeeId
+    ).collectAsState(initial = 0f)
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Real-Time Analytics") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.Default.ArrowBack, "Back")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Real-time indicator
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.Refresh,
+                            contentDescription = "Real-time",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "Live Data - Updates Automatically",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+            
+            // Attendance Summary Card
+            item {
+                AnalyticsCard(
+                    title = "Attendance Summary",
+                    icon = Icons.Default.DateRange,
+                    iconColor = Color(0xFF4CAF50)
+                ) {
+                    attendanceSummary.forEach { (label, value) ->
+                        StatRow(label = label, value = value.toString())
+                    }
+                }
+            }
+            
+            // Tasks Summary Card
+            item {
+                AnalyticsCard(
+                    title = "Tasks Overview",
+                    icon = Icons.Default.Task,
+                    iconColor = Color(0xFF2196F3)
+                ) {
+                    tasksSummary.forEach { (label, value) ->
+                        StatRow(label = label, value = value.toString())
+                    }
+                }
+            }
+            
+            // Performance Metrics Card
+            item {
+                AnalyticsCard(
+                    title = "Performance Metrics",
+                    icon = Icons.Default.TrendingUp,
+                    iconColor = Color(0xFFFF9800)
+                ) {
+                    StatRow(
+                        label = "Total Work Hours",
+                        value = String.format("%.1f hrs", totalWorkHours)
+                    )
+                    StatRow(
+                        label = "Task Completion Rate",
+                        value = String.format("%.1f%%", taskCompletionRate)
+                    )
+                    if (performanceAverage > 0) {
+                        StatRow(
+                            label = "Performance Average",
+                            value = String.format("%.1f / 5.0", performanceAverage)
+                        )
+                    }
+                }
+            }
+            
+            // Monthly Attendance Trend Chart
+            item {
+                AnalyticsCard(
+                    title = "Monthly Attendance Trend",
+                    icon = Icons.Default.ShowChart,
+                    iconColor = Color(0xFF9C27B0)
+                ) {
+                    if (monthlyTrend.isNotEmpty()) {
+                        val presentDays = monthlyTrend.count { it.second > 0 }
+                        val totalDays = monthlyTrend.size
+                        val attendanceRate = (presentDays.toFloat() / totalDays) * 100
+                        
+                        Text(
+                            "Present: $presentDays / $totalDays days",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(
+                            "Attendance Rate: ${String.format("%.1f%%", attendanceRate)}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (attendanceRate >= 80) Color(0xFF4CAF50) else Color(0xFFF44336)
+                        )
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        // Simple visualization (you can add a proper chart library)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
+                            monthlyTrend.take(31).forEach { (day, count) ->
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(40.dp),
+                                    contentAlignment = Alignment.BottomCenter
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(if (count > 0) 40.dp else 10.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Surface(
+                                            color = if (count > 0) Color(0xFF4CAF50) else Color(0xFFEEEEEE),
+                                            shape = MaterialTheme.shapes.extraSmall
+                                        ) {
+                                            Box(modifier = Modifier.fillMaxSize())
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        Text(
+                            "No attendance data available",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+            
+            // Info Card
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.Info,
+                                contentDescription = "Info",
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                "How Real-Time Works",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            "• All data automatically updates when Firebase changes\n" +
+                            "• Mark attendance → Stats update instantly\n" +
+                            "• Complete a task → Completion rate updates\n" +
+                            "• No refresh or restart needed\n" +
+                            "• Powered by Kotlin Flow & Firebase listeners",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AnalyticsCard(
+    title: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    iconColor: Color,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = title,
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            content()
+        }
+    }
+}
+
+@Composable
+private fun StatRow(
+    label: String,
+    value: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+            value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+/**
+ * Admin version showing all employees real-time analytics
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AdminRealTimeAnalyticsScreen(
+    onBack: () -> Unit
+) {
+    val viewModel: AnalyticsViewModelRealtime = viewModel()
+    val calendar = Calendar.getInstance()
+    val currentMonth = calendar.get(Calendar.MONTH) + 1
+    val currentYear = calendar.get(Calendar.YEAR)
+    
+    // Real-time all employees analytics
+    val allEmployeesAnalytics by viewModel.getAllEmployeesAnalyticsRealtime()
+        .collectAsState(initial = com.Vaishnav.employeetracker.viewmodel.EmployeeAnalyticsSummary())
+    
+    // Real-time department stats
+    val departmentStats by viewModel.getDepartmentAttendanceStatsRealtime(System.currentTimeMillis())
+        .collectAsState(initial = emptyMap())
+    
+    // Real-time late arrival trend
+    val lateTrend by viewModel.getLateArrivalTrendRealtime(currentMonth, currentYear)
+        .collectAsState(initial = emptyMap())
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Admin Dashboard - Live") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.Default.ArrowBack, "Back")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Overall Summary
+            item {
+                AnalyticsCard(
+                    title = "Organization Overview",
+                    icon = Icons.Default.Business,
+                    iconColor = Color(0xFF4CAF50)
+                ) {
+                    StatRow("Total Employees", allEmployeesAnalytics.totalEmployees.toString())
+                    StatRow("Present Today", allEmployeesAnalytics.presentToday.toString())
+                    StatRow("Absent Today", allEmployeesAnalytics.absentToday.toString())
+                    StatRow("Late Today", allEmployeesAnalytics.lateToday.toString())
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+                    StatRow("Total Tasks", allEmployeesAnalytics.totalTasks.toString())
+                    StatRow("Completed", allEmployeesAnalytics.completedTasks.toString())
+                    StatRow("In Progress", allEmployeesAnalytics.inProgressTasks.toString())
+                    StatRow("Pending", allEmployeesAnalytics.pendingTasks.toString())
+                }
+            }
+            
+            // Department Stats
+            item {
+                AnalyticsCard(
+                    title = "Department Attendance",
+                    icon = Icons.Default.Groups,
+                    iconColor = Color(0xFF2196F3)
+                ) {
+                    if (departmentStats.isNotEmpty()) {
+                        departmentStats.forEach { (dept, stats) ->
+                            val (present, total) = stats
+                            val rate = if (total > 0) (present.toFloat() / total) * 100 else 0f
+                            
+                            Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        dept,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Text(
+                                        "$present / $total (${String.format("%.0f%%", rate)})",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                                LinearProgressIndicator(
+                                    progress = { rate / 100f },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(4.dp),
+                                )
+                            }
+                        }
+                    } else {
+                        Text("No department data available")
+                    }
+                }
+            }
+            
+            // Late Arrival Trend
+            item {
+                AnalyticsCard(
+                    title = "Late Arrivals This Month",
+                    icon = Icons.Default.AccessTime,
+                    iconColor = Color(0xFFF44336)
+                ) {
+                    val totalLate = lateTrend.values.sum()
+                    val daysWithLate = lateTrend.count { it.value > 0 }
+                    
+                    StatRow("Total Late Arrivals", totalLate.toString())
+                    StatRow("Days with Late Arrivals", daysWithLate.toString())
+                    
+                    if (lateTrend.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            "Daily Breakdown:",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                        lateTrend.filter { it.value > 0 }.take(10).forEach { (day, count) ->
+                            StatRow("Day $day", count.toString())
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

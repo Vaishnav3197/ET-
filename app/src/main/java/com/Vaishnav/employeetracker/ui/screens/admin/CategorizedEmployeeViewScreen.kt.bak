@@ -1,0 +1,628 @@
+package com.Vaishnav.employeetracker.ui.screens.admin
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import com.Vaishnav.employeetracker.data.firebase.FirebaseEmployee
+import com.Vaishnav.employeetracker.data.firebase.FirebaseManager
+import com.Vaishnav.employeetracker.data.model.DepartmentDesignationManager
+import com.Vaishnav.employeetracker.utils.DateTimeHelper
+import com.Vaishnav.employeetracker.viewmodel.EmployeeViewModel
+import kotlinx.coroutines.launch
+
+/**
+ * Categorized Employee View Screen
+ * Shows all employees grouped by different categories with real-time Firebase updates
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CategorizedEmployeeViewScreen(
+    onNavigateBack: () -> Unit,
+    onEmployeeClick: (FirebaseEmployee) -> Unit = {},
+    employeeViewModel: EmployeeViewModel = viewModel()
+) {
+    var selectedCategory by remember { mutableStateOf(EmployeeCategory.DEPARTMENT) }
+    var selectedSort by remember { mutableStateOf(SortOption.NAME_ASC) }
+    var showFilterSheet by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+    
+    // Real-time employee list from Firebase
+    val employees by FirebaseManager.employeeRepository.getAllActiveEmployees()
+        .collectAsState(initial = emptyList())
+    
+    // Filter and categorize employees
+    val filteredEmployees = remember(employees, searchQuery) {
+        employees.filter { employee ->
+            searchQuery.isEmpty() || 
+            employee.name.contains(searchQuery, ignoreCase = true) ||
+            employee.email.contains(searchQuery, ignoreCase = true) ||
+            employee.department.contains(searchQuery, ignoreCase = true) ||
+            employee.designation.contains(searchQuery, ignoreCase = true)
+        }
+    }
+    
+    val categorizedEmployees = remember(filteredEmployees, selectedCategory, selectedSort) {
+        categorizeAndSortEmployees(filteredEmployees, selectedCategory, selectedSort)
+    }
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Employee Categories") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.Default.ArrowBack, "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { showFilterSheet = true }) {
+                        Icon(Icons.Default.FilterList, "Filter & Sort")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White,
+                    actionIconContentColor = Color.White
+                )
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            // Search Bar
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                placeholder = { Text("Search employees...") },
+                leadingIcon = { Icon(Icons.Default.Search, "Search") },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(Icons.Default.Clear, "Clear")
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp)
+            )
+            
+            // Category Selector Chips
+            CategoryChipRow(
+                selectedCategory = selectedCategory,
+                onCategorySelected = { selectedCategory = it }
+            )
+            
+            // Statistics Bar
+            StatisticsBar(
+                totalCount = filteredEmployees.size,
+                activeCount = filteredEmployees.count { it.isActive },
+                selectedCategory = selectedCategory
+            )
+            
+            // Categorized Employee List
+            if (categorizedEmployees.isEmpty()) {
+                EmptyStateView(searchQuery.isNotEmpty())
+            } else {
+                CategorizedEmployeeList(
+                    categorizedEmployees = categorizedEmployees,
+                    selectedCategory = selectedCategory,
+                    onEmployeeClick = onEmployeeClick
+                )
+            }
+        }
+        
+        // Filter & Sort Bottom Sheet
+        if (showFilterSheet) {
+            FilterSortBottomSheet(
+                currentSort = selectedSort,
+                onSortSelected = { selectedSort = it },
+                onDismiss = { showFilterSheet = false }
+            )
+        }
+    }
+}
+
+/**
+ * Category selector chips
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CategoryChipRow(
+    selectedCategory: EmployeeCategory,
+    onCategorySelected: (EmployeeCategory) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        EmployeeCategory.values().forEach { category ->
+            FilterChip(
+                selected = selectedCategory == category,
+                onClick = { onCategorySelected(category) },
+                label = { Text(category.displayName) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = category.icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            )
+        }
+    }
+}
+
+/**
+ * Statistics bar showing counts
+ */
+@Composable
+private fun StatisticsBar(
+    totalCount: Int,
+    activeCount: Int,
+    selectedCategory: EmployeeCategory
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            StatItem(
+                label = "Total",
+                value = totalCount.toString(),
+                icon = Icons.Default.People
+            )
+            StatItem(
+                label = "Active",
+                value = activeCount.toString(),
+                icon = Icons.Default.CheckCircle,
+                color = Color(0xFF4CAF50)
+            )
+            StatItem(
+                label = "Inactive",
+                value = (totalCount - activeCount).toString(),
+                icon = Icons.Default.Cancel,
+                color = Color(0xFFF44336)
+            )
+        }
+    }
+}
+
+@Composable
+private fun StatItem(
+    label: String,
+    value: String,
+    icon: ImageVector,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = color,
+            modifier = Modifier.size(24.dp)
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+        )
+    }
+}
+
+/**
+ * Main categorized employee list
+ */
+@Composable
+private fun CategorizedEmployeeList(
+    categorizedEmployees: Map<String, List<FirebaseEmployee>>,
+    selectedCategory: EmployeeCategory,
+    onEmployeeClick: (FirebaseEmployee) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        categorizedEmployees.forEach { (categoryName, employeeList) ->
+            item {
+                CategorySection(
+                    categoryName = categoryName,
+                    employees = employeeList,
+                    selectedCategory = selectedCategory,
+                    onEmployeeClick = onEmployeeClick
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Individual category section with expandable employee list
+ */
+@Composable
+private fun CategorySection(
+    categoryName: String,
+    employees: List<FirebaseEmployee>,
+    selectedCategory: EmployeeCategory,
+    onEmployeeClick: (FirebaseEmployee) -> Unit
+) {
+    var expanded by remember { mutableStateOf(true) }
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column {
+            // Category Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(
+                        imageVector = selectedCategory.icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Column {
+                        Text(
+                            text = categoryName,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "${employees.size} employee${if (employees.size != 1) "s" else ""}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        )
+                    }
+                }
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = if (expanded) "Collapse" else "Expand"
+                )
+            }
+            
+            // Employee List
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Column {
+                    HorizontalDivider()
+                    employees.forEach { employee ->
+                        EmployeeListItem(
+                            employee = employee,
+                            onClick = { onEmployeeClick(employee) }
+                        )
+                        if (employee != employees.last()) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Individual employee list item
+ */
+@Composable
+private fun EmployeeListItem(
+    employee: FirebaseEmployee,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Profile Photo
+        Box {
+            if (employee.profilePhotoUri?.isNotEmpty() == true) {
+                AsyncImage(
+                    model = employee.profilePhotoUri,
+                    contentDescription = "Profile photo",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = employee.name.take(1).uppercase(),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+            }
+            
+            // Status indicator
+            Box(
+                modifier = Modifier
+                    .size(14.dp)
+                    .align(Alignment.BottomEnd)
+                    .clip(CircleShape)
+                    .background(
+                        if (employee.isActive) Color(0xFF4CAF50)
+                        else Color(0xFFF44336)
+                    )
+                    .padding(2.dp)
+            )
+        }
+        
+        // Employee Info
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = employee.name,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = employee.designation,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            )
+            Text(
+                text = employee.department,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+        }
+        
+        // Status Badge
+        Badge(
+            containerColor = if (employee.isActive) 
+                Color(0xFF4CAF50).copy(alpha = 0.2f)
+            else 
+                Color(0xFFF44336).copy(alpha = 0.2f)
+        ) {
+            Text(
+                text = if (employee.isActive) "Active" else "Inactive",
+                color = if (employee.isActive) Color(0xFF2E7D32) else Color(0xFFC62828),
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+    }
+}
+
+/**
+ * Empty state view
+ */
+@Composable
+private fun EmptyStateView(isSearching: Boolean) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Icon(
+                imageVector = if (isSearching) Icons.Default.SearchOff else Icons.Default.PersonOff,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+            )
+            Text(
+                text = if (isSearching) "No matching employees found" else "No employees yet",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+        }
+    }
+}
+
+/**
+ * Filter and sort bottom sheet
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FilterSortBottomSheet(
+    currentSort: SortOption,
+    onSortSelected: (SortOption) -> Unit,
+    onDismiss: () -> Unit
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Sort By",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            
+            SortOption.values().forEach { option ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onSortSelected(option)
+                            onDismiss()
+                        }
+                        .padding(vertical = 12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = option.icon,
+                            contentDescription = null
+                        )
+                        Text(
+                            text = option.displayName,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    
+                    if (option == currentSort) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Selected",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+/**
+ * Employee category enum
+ */
+enum class EmployeeCategory(
+    val displayName: String,
+    val icon: ImageVector
+) {
+    DEPARTMENT("Department", Icons.Default.Business),
+    DESIGNATION("Designation", Icons.Default.Work),
+    STATUS("Employment Status", Icons.Default.VerifiedUser),
+    JOINING_DATE("Joining Date", Icons.Default.CalendarToday)
+}
+
+/**
+ * Sort option enum
+ */
+enum class SortOption(
+    val displayName: String,
+    val icon: ImageVector
+) {
+    NAME_ASC("Name (A-Z)", Icons.Default.SortByAlpha),
+    NAME_DESC("Name (Z-A)", Icons.Default.Sort),
+    JOINING_NEW("Newest First", Icons.Default.NewReleases),
+    JOINING_OLD("Oldest First", Icons.Default.History),
+    DEPARTMENT("Department", Icons.Default.Business),
+    DESIGNATION("Designation", Icons.Default.Work)
+}
+
+/**
+ * Helper function to categorize and sort employees
+ */
+private fun categorizeAndSortEmployees(
+    employees: List<FirebaseEmployee>,
+    category: EmployeeCategory,
+    sortOption: SortOption
+): Map<String, List<FirebaseEmployee>> {
+    // First, sort employees
+    val sortedEmployees = when (sortOption) {
+        SortOption.NAME_ASC -> employees.sortedBy { it.name }
+        SortOption.NAME_DESC -> employees.sortedByDescending { it.name }
+        SortOption.JOINING_NEW -> employees.sortedByDescending { it.joiningDate }
+        SortOption.JOINING_OLD -> employees.sortedBy { it.joiningDate }
+        SortOption.DEPARTMENT -> employees.sortedBy { it.department }
+        SortOption.DESIGNATION -> employees.sortedBy { it.designation }
+    }
+    
+    // Then, categorize employees
+    return when (category) {
+        EmployeeCategory.DEPARTMENT -> {
+            sortedEmployees.groupBy { it.department.ifEmpty { "Unassigned" } }
+                .toSortedMap()
+        }
+        EmployeeCategory.DESIGNATION -> {
+            sortedEmployees.groupBy { it.designation.ifEmpty { "Unassigned" } }
+                .toSortedMap()
+        }
+        EmployeeCategory.STATUS -> {
+            sortedEmployees.groupBy { 
+                if (it.isActive) "Active Employees" else "Inactive Employees"
+            }
+        }
+        EmployeeCategory.JOINING_DATE -> {
+            sortedEmployees.groupBy { 
+                val year = java.util.Calendar.getInstance().apply {
+                    timeInMillis = it.joiningDate
+                }.get(java.util.Calendar.YEAR)
+                year.toString()
+            }.toSortedMap(compareByDescending { it })
+        }
+    }
+}

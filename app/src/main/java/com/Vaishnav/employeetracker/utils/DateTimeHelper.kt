@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 object DateTimeHelper {
     // Office hours configuration
     private const val OFFICE_START_HOUR = 9
-    private const val OFFICE_START_MINUTE = 30
+    private const val OFFICE_START_MINUTE = 15  // Late if checked in after 9:15 AM
     
     /**
      * Get current timestamp
@@ -38,7 +38,7 @@ object DateTimeHelper {
     }
     
     /**
-     * Check if employee checked in late (after 9:30 AM)
+     * Check if employee checked in late (after 9:15 AM)
      */
     fun isLateCheckIn(checkInTime: Long): Boolean {
         val calendar = Calendar.getInstance()

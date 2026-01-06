@@ -36,13 +36,17 @@ class FirebaseLeaveRepository {
         return try {
             val updates = mutableMapOf<String, Any>(
                 "status" to status,
-                "reviewedById" to reviewedById
+                "approvedByAdminId" to reviewedById,
+                "approvalDate" to System.currentTimeMillis()
             )
-            comments?.let { updates["adminComments"] = it }
+            comments?.let { updates["adminRemarks"] = it }
             
+            android.util.Log.d("FirebaseLeaveRepo", "Updating leave $requestId: status=$status, adminId=$reviewedById")
             leaveCollection.document(requestId).update(updates).await()
+            android.util.Log.d("FirebaseLeaveRepo", "✅ Leave $requestId updated successfully")
             Result.success(Unit)
         } catch (e: Exception) {
+            android.util.Log.e("FirebaseLeaveRepo", "❌ Error updating leave $requestId", e)
             Result.failure(e)
         }
     }
@@ -79,65 +83,87 @@ class FirebaseLeaveRepository {
         }
     }
 
-    // Get employee's leave requests
+    // Get employee's leave requests (REAL-TIME)
     fun getEmployeeLeaveRequests(employeeId: String): Flow<List<FirebaseLeaveRequest>> = callbackFlow {
+        android.util.Log.d("FirebaseLeaveRepo", "Setting up REAL-TIME listener for employee $employeeId leaves...")
         val listener = leaveCollection
             .whereEqualTo("employeeId", employeeId)
-            .orderBy("submittedDate", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
+                    android.util.Log.e("FirebaseLeaveRepo", "❌ Error in employee leaves listener", error)
                     close(error)
                     return@addSnapshotListener
                 }
                 val requests = snapshot?.toObjects(FirebaseLeaveRequest::class.java) ?: emptyList()
-                trySend(requests)
+                // Sort in-memory by requestDate (newest first)
+                val sortedRequests = requests.sortedByDescending { it.requestDate?.time ?: 0L }
+                android.util.Log.d("FirebaseLeaveRepo", "✅ Employee leaves updated: ${sortedRequests.size} leaves, statuses: ${sortedRequests.map { it.status }}")
+                trySend(sortedRequests)
             }
-        awaitClose { listener.remove() }
+        awaitClose { 
+            android.util.Log.d("FirebaseLeaveRepo", "Closing employee leaves listener for $employeeId")
+            listener.remove() 
+        }
     }
 
     // Get pending leave requests (admin)
     fun getPendingLeaveRequests(): Flow<List<FirebaseLeaveRequest>> = callbackFlow {
+        android.util.Log.d("FirebaseLeaveRepo", "Setting up pending leaves listener...")
         val listener = leaveCollection
             .whereEqualTo("status", "Pending")
-            .orderBy("submittedDate", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
+                    android.util.Log.e("FirebaseLeaveRepo", "❌ Error in pending leaves listener", error)
                     close(error)
                     return@addSnapshotListener
                 }
                 val requests = snapshot?.toObjects(FirebaseLeaveRequest::class.java) ?: emptyList()
-                trySend(requests)
+                // Sort in-memory to avoid Firestore index requirement
+                val sortedRequests = requests.sortedBy { it.requestDate?.time ?: 0L }
+                android.util.Log.d("FirebaseLeaveRepo", "✅ Loaded ${sortedRequests.size} pending leave requests")
+                trySend(sortedRequests)
             }
-        awaitClose { listener.remove() }
+        awaitClose { 
+            android.util.Log.d("FirebaseLeaveRepo", "Closing pending leaves listener")
+            listener.remove() 
+        }
     }
 
     // Get all leave requests (admin)
     fun getAllLeaveRequests(): Flow<List<FirebaseLeaveRequest>> = callbackFlow {
+        android.util.Log.d("FirebaseLeaveRepo", "Setting up all leaves listener...")
         val listener = leaveCollection
-            .orderBy("submittedDate", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
+                    android.util.Log.e("FirebaseLeaveRepo", "❌ Error in all leaves listener", error)
                     close(error)
                     return@addSnapshotListener
                 }
                 val requests = snapshot?.toObjects(FirebaseLeaveRequest::class.java) ?: emptyList()
-                trySend(requests)
+                // Sort in-memory (newest first)
+                val sortedRequests = requests.sortedByDescending { it.requestDate?.time ?: 0L }
+                android.util.Log.d("FirebaseLeaveRepo", "✅ Loaded ${sortedRequests.size} total leave requests")
+                trySend(sortedRequests)
             }
-        awaitClose { listener.remove() }
+        awaitClose { 
+            android.util.Log.d("FirebaseLeaveRepo", "Closing all leaves listener")
+            listener.remove() 
+        }
     }
 
     // Get leave requests by status
     fun getLeaveRequestsByStatus(status: String): Flow<List<FirebaseLeaveRequest>> = callbackFlow {
         val listener = leaveCollection
             .whereEqualTo("status", status)
-            .orderBy("submittedDate", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     close(error)
                     return@addSnapshotListener
                 }
                 val requests = snapshot?.toObjects(FirebaseLeaveRequest::class.java) ?: emptyList()
-                trySend(requests)
+                // Sort in-memory (newest first)
+                val sortedRequests = requests.sortedByDescending { it.requestDate?.time ?: 0L }
+                trySend(sortedRequests)
             }
         awaitClose { listener.remove() }
     }
@@ -146,14 +172,15 @@ class FirebaseLeaveRepository {
     fun getLeaveRequestsByType(leaveType: String): Flow<List<FirebaseLeaveRequest>> = callbackFlow {
         val listener = leaveCollection
             .whereEqualTo("leaveType", leaveType)
-            .orderBy("submittedDate", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     close(error)
                     return@addSnapshotListener
                 }
                 val requests = snapshot?.toObjects(FirebaseLeaveRequest::class.java) ?: emptyList()
-                trySend(requests)
+                // Sort in-memory (newest first)
+                val sortedRequests = requests.sortedByDescending { it.requestDate?.time ?: 0L }
+                trySend(sortedRequests)
             }
         awaitClose { listener.remove() }
     }

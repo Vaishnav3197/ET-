@@ -18,44 +18,32 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.Vaishnav.employeetracker.data.firebase.FirebaseLeaveRequest
 import com.Vaishnav.employeetracker.utils.DateTimeHelper
-import com.Vaishnav.employeetracker.viewmodel.LeaveViewModel
+import com.Vaishnav.employeetracker.viewmodel.AdminLeaveViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
+/**
+ * LeaveApprovalScreen - ADMIN ONLY
+ * 
+ * This screen is exclusively for admins to view and approve/reject employee leave requests.
+ * Uses AdminLeaveViewModel (not LeaveViewModel) to avoid employee-specific logic.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeaveApprovalScreen(
     adminId: String,
     onNavigateBack: () -> Unit,
-    leaveViewModel: LeaveViewModel = viewModel()
+    viewModel: AdminLeaveViewModel = viewModel()
 ) {
     val scope = rememberCoroutineScope()
     val currentAdminId = Firebase.auth.currentUser?.uid
     
-    // Safely get pending leaves only if currentAdminId is valid
-    val pendingLeaves by remember(currentAdminId) {
-        if (currentAdminId != null) {
-            leaveViewModel.getPendingLeaves(currentAdminId)
-        } else {
-            kotlinx.coroutines.flow.flowOf(emptyList())
-        }
-    }.collectAsState(initial = emptyList())
+    // Collect UI state from ViewModel
+    val uiState by viewModel.uiState.collectAsState()
     
     var selectedLeave by remember { mutableStateOf<FirebaseLeaveRequest?>(null) }
     var showMessage by remember { mutableStateOf<String?>(null) }
-    var pendingCount by remember { mutableStateOf(0) }
-    
-    LaunchedEffect(currentAdminId) {
-        if (currentAdminId != null) {
-            try {
-                pendingCount = leaveViewModel.getPendingCount(currentAdminId)
-            } catch (e: Exception) {
-                android.util.Log.e("LeaveApproval", "Error loading pending count", e)
-                pendingCount = 0
-            }
-        }
-    }
     
     Scaffold(
         topBar = {
@@ -64,6 +52,12 @@ fun LeaveApprovalScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, "Back", tint = Color.White)
+                    }
+                },
+                actions = {
+                    // Refresh button
+                    IconButton(onClick = { viewModel.refresh() }) {
+                        Icon(Icons.Default.Refresh, "Refresh", tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -98,7 +92,7 @@ fun LeaveApprovalScreen(
                     .fillMaxWidth()
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (pendingCount > 0) {
+                    containerColor = if (uiState.pendingCount > 0) {
                         MaterialTheme.colorScheme.tertiaryContainer
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
@@ -125,7 +119,7 @@ fun LeaveApprovalScreen(
                     }
                     
                     Text(
-                        text = "$pendingCount",
+                        text = "${uiState.pendingCount}",
                         style = MaterialTheme.typography.displayMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -133,78 +127,143 @@ fun LeaveApprovalScreen(
                 }
             }
             
-            if (pendingLeaves.isEmpty()) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
-                            contentDescription = null,
-                            modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = "No pending leave requests",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
-                            text = "All caught up!",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+            // Handle different UI states
+            when {
+                // Loading state
+                uiState.isLoading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            CircularProgressIndicator()
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "Loading leave requests...",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(pendingLeaves, key = { it.id }) { leave ->
-                        LeaveApprovalItem(
-                            leave = leave,
-                            onApprove = { selectedLeave = leave },
-                            onReject = { selectedLeave = leave }
-                        )
+                
+                // Error state
+                uiState.hasError -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.padding(32.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = null,
+                                modifier = Modifier.size(64.dp),
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "Error",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = uiState.error ?: "Unknown error occurred",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = { viewModel.refresh() }) {
+                                Icon(Icons.Default.Refresh, contentDescription = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Retry")
+                            }
+                        }
+                    }
+                }
+                
+                // Empty state
+                uiState.isEmpty -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                modifier = Modifier.size(64.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "No pending leave requests",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                text = "All caught up!",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+                
+                // Success state with data
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(uiState.pendingLeaves, key = { it.id }) { leave ->
+                            LeaveApprovalItem(
+                                leave = leave,
+                                onApprove = { selectedLeave = leave },
+                                onReject = { selectedLeave = leave }
+                            )
+                        }
                     }
                 }
             }
         }
     }
     
+    // Leave Action Dialog
     selectedLeave?.let { leave ->
-        LeaveActionDialog(
-            leave = leave,
-            onDismiss = { selectedLeave = null },
-            onApprove = { remarks ->
-                scope.launch {
-                    val result = leaveViewModel.approveLeave(leave.id, adminId, remarks)
-                    result.onSuccess {
-                        showMessage = it
-                        selectedLeave = null
-                        pendingCount = leaveViewModel.getPendingCount()
-                    }.onFailure {
-                        showMessage = it.message ?: "Failed to approve leave"
+        if (currentAdminId != null) {
+            LeaveActionDialog(
+                leave = leave,
+                onDismiss = { selectedLeave = null },
+                onApprove = { remarks ->
+                    scope.launch {
+                        val result = viewModel.approveLeave(leave.id, currentAdminId, remarks)
+                        result.onSuccess {
+                            showMessage = it
+                            selectedLeave = null
+                        }.onFailure {
+                            showMessage = it.message ?: "Failed to approve leave"
+                        }
+                    }
+                },
+                onReject = { remarks ->
+                    scope.launch {
+                        val result = viewModel.rejectLeave(leave.id, currentAdminId, remarks)
+                        result.onSuccess {
+                            showMessage = it
+                            selectedLeave = null
+                        }.onFailure {
+                            showMessage = it.message ?: "Failed to reject leave"
+                        }
                     }
                 }
-            },
-            onReject = { remarks ->
-                scope.launch {
-                    val result = leaveViewModel.rejectLeave(leave.id, adminId, remarks)
-                    result.onSuccess {
-                        showMessage = it
-                        selectedLeave = null
-                        pendingCount = leaveViewModel.getPendingCount()
-                    }.onFailure {
-                        showMessage = it.message ?: "Failed to reject leave"
-                    }
-                }
-            }
-        )
+            )
+        }
     }
 }
 

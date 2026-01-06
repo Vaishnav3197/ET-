@@ -18,6 +18,7 @@ import com.Vaishnav.employeetracker.data.*
 import com.Vaishnav.employeetracker.data.firebase.FirebaseManager
 import com.Vaishnav.employeetracker.data.firebase.FirebaseEmployee
 import com.Vaishnav.employeetracker.data.firebase.FirebaseAuthManager
+import com.Vaishnav.employeetracker.data.firebase.FirebaseInitializer
 import com.Vaishnav.employeetracker.ui.theme.EmployeeTrackerTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -79,6 +80,17 @@ class MainActivity : ComponentActivity() {
         
         // Initialize FirebaseAuthManager
         FirebaseAuthManager.getInstance().initialize(applicationContext)
+        
+        // Initialize Firebase structures (company group, etc.)
+        lifecycleScope.launch {
+            try {
+                android.util.Log.d("MainActivity", "Initializing Firebase structures...")
+                FirebaseInitializer.ensureCompanyGroupExists()
+                android.util.Log.d("MainActivity", "Firebase structures initialized")
+            } catch (e: Exception) {
+                android.util.Log.e("MainActivity", "Error initializing Firebase structures", e)
+            }
+        }
         
         // Initialize default Firebase employees if needed
         initializeDefaultEmployees()

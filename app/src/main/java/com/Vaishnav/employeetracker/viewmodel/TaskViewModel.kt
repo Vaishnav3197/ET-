@@ -126,6 +126,50 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     
+    // New method that accepts String Firebase IDs directly
+    suspend fun createTaskWithFirebaseIds(
+        title: String,
+        description: String,
+        assignedToFirebaseId: String,
+        assignedByAdminFirebaseId: String,
+        deadline: Long,
+        priority: String
+    ): Result<String> {
+        return try {
+            val task = FirebaseTask(
+                title = title,
+                description = description,
+                assignedToId = assignedToFirebaseId,  // Use Firebase document ID directly
+                assignedByAdminId = assignedByAdminFirebaseId,
+                deadline = deadline,
+                priority = priority,
+                status = "Pending"
+            )
+            
+            val result = taskRepo.addTask(task)
+            val taskId = result.getOrNull()
+            
+            if (taskId != null) {
+                // Send notification to employee using Firebase ID
+                val notification = FirebaseNotification(
+                    userId = assignedToFirebaseId,
+                    title = "New Task Assigned",
+                    message = "You have been assigned a new task: $title",
+                    type = "Task",
+                    relatedId = taskId,
+                    isRead = false
+                )
+                notificationRepo.sendNotification(notification)
+                
+                Result.success(taskId)
+            } else {
+                Result.failure(Exception("Failed to create task"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+    
     suspend fun deleteTask(taskId: Int): Result<String> {
         return try {
             val result = taskRepo.deleteTask(taskId.toString())

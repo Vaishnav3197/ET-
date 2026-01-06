@@ -35,11 +35,29 @@ fun TaskAssignmentScreen(
     var showAddDialog by remember { mutableStateOf(false) }
     var showMessage by remember { mutableStateOf<String?>(null) }
     var selectedFilter by remember { mutableStateOf("All") }
+    var adminFirebaseId by remember { mutableStateOf("") }
+    
+    // Get admin's Firebase document ID
+    LaunchedEffect(Unit) {
+        val firebaseUserId = com.Vaishnav.employeetracker.data.firebase.FirebaseAuthManager.getInstance().getCurrentUserId()
+        if (firebaseUserId != null) {
+            try {
+                val admin = com.Vaishnav.employeetracker.data.firebase.FirebaseManager.employeeRepository
+                    .getEmployeeByUserId(firebaseUserId)
+                adminFirebaseId = admin?.id ?: ""
+            } catch (e: Exception) {
+                android.util.Log.e("TaskAssignment", "Error getting admin Firebase ID", e)
+            }
+        }
+    }
     
     val allTasks by taskViewModel.getMyTasks("").collectAsState(initial = emptyList()) // Get all tasks
     val overdueTasks by taskViewModel.getOverdueTasks().collectAsState(initial = emptyList())
     
-    val employees by employeeViewModel.getAllActiveEmployees().collectAsState(initial = emptyList())
+    // Get Firebase employees directly to preserve document IDs for task assignment
+    val firebaseEmployees by com.Vaishnav.employeetracker.data.firebase.FirebaseManager.employeeRepository
+        .getAllEmployeesOnly()
+        .collectAsState(initial = emptyList())
     
     val displayTasks = when (selectedFilter) {
         "Overdue" -> overdueTasks
@@ -157,17 +175,17 @@ fun TaskAssignmentScreen(
         }
     }
     
-    if (showAddDialog && employees.isNotEmpty()) {
+    if (showAddDialog && firebaseEmployees.isNotEmpty() && adminFirebaseId.isNotEmpty()) {
         AssignTaskDialog(
-            employees = employees,
+            employees = firebaseEmployees,
             onDismiss = { showAddDialog = false },
-            onAssign = { title, description, employeeId, deadline, priority ->
+            onAssign = { title, description, employeeFirebaseId, deadline, priority ->
                 scope.launch {
-                    val result = taskViewModel.createTask(
+                    val result = taskViewModel.createTaskWithFirebaseIds(
                         title = title,
                         description = description,
-                        assignedToId = employeeId,
-                        assignedByAdminId = adminId,
+                        assignedToFirebaseId = employeeFirebaseId,
+                        assignedByAdminFirebaseId = adminFirebaseId,
                         deadline = deadline,
                         priority = priority
                     )
@@ -334,13 +352,13 @@ fun AdminTaskItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssignTaskDialog(
-    employees: List<com.Vaishnav.employeetracker.data.Employee>,
+    employees: List<com.Vaishnav.employeetracker.data.firebase.FirebaseEmployee>,
     onDismiss: () -> Unit,
-    onAssign: (String, String, Int, Long, String) -> Unit
+    onAssign: (String, String, String, Long, String) -> Unit  // Changed employeeId to String
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedEmployeeId by remember { mutableStateOf(employees.firstOrNull()?.id ?: 0) }
+    var selectedEmployeeId by remember { mutableStateOf(employees.firstOrNull()?.id ?: "") }
     var deadline by remember { mutableStateOf("") }
     var priority by remember { mutableStateOf("Medium") }
     var expandedEmployee by remember { mutableStateOf(false) }

@@ -63,7 +63,7 @@ class FirebaseMessageRepository {
     fun getGroupMessages(groupId: String): Flow<List<FirebaseMessage>> = callbackFlow {
         val listener = messageCollection
             .whereEqualTo("groupId", groupId)
-            .orderBy("sentTime", Query.Direction.ASCENDING)
+            .orderBy("timestamp", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     close(error)
@@ -95,7 +95,7 @@ class FirebaseMessageRepository {
     fun getMessagesBySender(senderId: String): Flow<List<FirebaseMessage>> = callbackFlow {
         val listener = messageCollection
             .whereEqualTo("senderId", senderId)
-            .orderBy("sentTime", Query.Direction.DESCENDING)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .limit(50)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
@@ -131,7 +131,7 @@ class FirebaseMessageRepository {
     fun getUserMessages(userId: String): Flow<List<FirebaseMessage>> = callbackFlow {
         val listener = messageCollection
             .whereEqualTo("senderId", userId)
-            .orderBy("sentTime", Query.Direction.DESCENDING)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .limit(100)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
